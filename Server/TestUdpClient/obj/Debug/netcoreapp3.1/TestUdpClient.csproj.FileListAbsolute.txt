@@ -1,0 +1,13 @@
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\bin\Debug\netcoreapp3.1\TestUdpClient.exe
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\bin\Debug\netcoreapp3.1\TestUdpClient.deps.json
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\bin\Debug\netcoreapp3.1\TestUdpClient.runtimeconfig.json
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\bin\Debug\netcoreapp3.1\TestUdpClient.runtimeconfig.dev.json
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\bin\Debug\netcoreapp3.1\TestUdpClient.dll
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\bin\Debug\netcoreapp3.1\TestUdpClient.pdb
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.csprojAssemblyReference.cache
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.AssemblyInfoInputs.cache
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.AssemblyInfo.cs
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.csproj.CoreCompileInputs.cache
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.dll
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.pdb
+C:\Users\lensk\Documents\GitHub\Agar.io\Server\TestUdpClient\obj\Debug\netcoreapp3.1\TestUdpClient.genruntimeconfig.cache
