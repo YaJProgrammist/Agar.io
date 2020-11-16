@@ -7,12 +7,15 @@ namespace Server
     {
         public static List<byte> SerializeInt(int initialValue)
         {
-            List<byte> seriaized = new List<byte>(4);
+            List<byte> seriaized = new List<byte>{ 0, 0, 0, 0 };
 
-            for (int i = 0; i < 4; i++)
+            int i = 0;
+
+            while(i < 4 && initialValue > 0)
             {
                 seriaized[i] = (byte)(initialValue % 256);
                 initialValue /= 256;
+                i++;
             }
 
             return seriaized;

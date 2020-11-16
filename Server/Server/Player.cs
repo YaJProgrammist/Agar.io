@@ -24,11 +24,11 @@ namespace Server
             IsPresent = true;
         }
 
-        public void StartNewGame(double firstCircleX, double firstCircleY)
+        public void StartNewGame(Point firstCirclePoint)
         {
             Score = 0;
             PlayerCircles.Clear();
-            PlayerCircles.Add(new Circle(firstCircleX, firstCircleY));
+            PlayerCircles.Add(new Circle(firstCirclePoint));
         }
 
         public void Split()
@@ -41,7 +41,7 @@ namespace Server
                 if (circle.Radius >= minSplitRadius)
                 {
                     circle.Radius /= 2;
-                    newCircles.Add(new Circle(circle.X, circle.Y, circle.Radius));
+                    newCircles.Add(new Circle(circle.Position, circle.Radius));
                 }
             }
 
@@ -93,10 +93,10 @@ namespace Server
 
             foreach (Circle circle in PlayerCircles)
             {
-                leftX = Math.Min(circle.X, leftX);
-                rightX = Math.Max(circle.X, rightX);
-                bottomY = Math.Min(circle.Y, bottomY);
-                topY = Math.Max(circle.Y, topY);
+                leftX = Math.Min(circle.Position.X, leftX);
+                rightX = Math.Max(circle.Position.X, rightX);
+                bottomY = Math.Min(circle.Position.Y, bottomY);
+                topY = Math.Max(circle.Position.Y, topY);
             }
 
             LeftX = leftX;

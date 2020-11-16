@@ -23,8 +23,8 @@ namespace Server.Events
                 serialized.AddRange(Serializer.SerializeInt(player.Id));
 
                 Circle playerFirstCircle = player.PlayerCircles[0];
-                serialized.AddRange(Serializer.SerializeDouble(playerFirstCircle.X));
-                serialized.AddRange(Serializer.SerializeDouble(playerFirstCircle.Y));
+                serialized.AddRange(Serializer.SerializeDouble(playerFirstCircle.Position.X));
+                serialized.AddRange(Serializer.SerializeDouble(playerFirstCircle.Position.Y));
             }
 
             return serialized.ToArray();

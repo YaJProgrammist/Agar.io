@@ -14,7 +14,7 @@ namespace Server
 
         public bool IsRemoved { get; private set; }
 
-        public Circle(double x, double y, double radius = MIN_RADIUS) : base (x, y)
+        public Circle(Point position, double radius = MIN_RADIUS) : base (position)
         {
             childCircles = new List<Circle>();
             Radius = radius;
@@ -25,9 +25,8 @@ namespace Server
 
         public void Move(double velocityX, double velocityY)
         {
-            double speed = 10 / Radius;
-            X += velocityX * speed;
-            Y += velocityY * speed;
+            double speed = 100 / Radius;
+            Position = new Point(Position.X + velocityX * speed, Position.Y + velocityY * speed);
 
             UpdateBorderlineCells();
         }
@@ -45,13 +44,13 @@ namespace Server
                 return false;
             }
 
-            double otherLeftX = other.X - Radius;
-            double otherRightX = other.X + Radius;
-            double otherBottomY = other.Y - Radius;
-            double otherTopY = other.Y + Radius;
+            double otherLeftX = other.Position.X - Radius;
+            double otherRightX = other.Position.X + Radius;
+            double otherBottomY = other.Position.Y - Radius;
+            double otherTopY = other.Position.Y + Radius;
 
-            bool horizontallyInside = (this.X - Radius < otherLeftX) && (otherRightX < this.X + Radius);
-            bool verticallyInside = (this.Y - Radius < otherBottomY) && (otherTopY < this.Y + Radius);
+            bool horizontallyInside = (this.Position.X - Radius < otherLeftX) && (otherRightX < this.Position.X + Radius);
+            bool verticallyInside = (this.Position.Y - Radius < otherBottomY) && (otherTopY < this.Position.Y + Radius);
 
             return horizontallyInside && verticallyInside;
         }
@@ -70,16 +69,16 @@ namespace Server
 
         private void UpdateBorderlineCells()
         {
-            double leftX = X - Radius;
+            double leftX = Position.X - Radius;
             LeftCellX = (int)(leftX / Cell.WIDTH);
 
-            double rightX = X + Radius;
+            double rightX = Position.X + Radius;
             RightCellX = (int)(rightX / Cell.WIDTH);
 
-            double bottomY = Y - Radius;
+            double bottomY = Position.Y - Radius;
             BottomCellY = (int)(bottomY / Cell.HEIGHT);
 
-            double topY = Y + Radius;
+            double topY = Position.Y + Radius;
             TopCellY = (int)(topY / Cell.HEIGHT);
         }
     }

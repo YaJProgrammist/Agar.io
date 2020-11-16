@@ -24,8 +24,8 @@ namespace Server.Events
 
                 foreach (Circle circle in player.PlayerCircles)
                 {
-                    serialized.AddRange(Serializer.SerializeDouble(circle.X));
-                    serialized.AddRange(Serializer.SerializeDouble(circle.Y));
+                    serialized.AddRange(Serializer.SerializeDouble(circle.Position.X));
+                    serialized.AddRange(Serializer.SerializeDouble(circle.Position.Y));
                 }
             }
 

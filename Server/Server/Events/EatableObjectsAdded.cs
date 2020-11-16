@@ -20,8 +20,8 @@ namespace Server.Events
             foreach (EatableObject eatableObject in NewEatableObjects)
             {
                 serialized.AddRange(Serializer.SerializeInt(eatableObject.Id));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.X));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Y));
+                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.X));
+                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.Y));
                 serialized.AddRange(Serializer.SerializeDouble(eatableObject.Radius));
             }
 
