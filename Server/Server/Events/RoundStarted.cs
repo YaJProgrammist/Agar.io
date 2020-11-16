@@ -16,20 +16,15 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.RoundOver);
+            serialized.Add((byte)GameEventTypes.RoundStarted);
 
             foreach (Player player in PlayersPutOnField)
             {
                 serialized.AddRange(Serializer.SerializeInt(player.Id));
-                serialized.Add(0);
 
-                Circle playerFirstCircle = player.playerCircles[0];
-                serialized.AddRange(Serializer.SerializeInt(player.Id));
-                serialized.Add(0);
-                serialized.AddRange(Serializer.SerializeInt((int)Math.Round(playerFirstCircle.X)));
-                serialized.Add(0);
-                serialized.AddRange(Serializer.SerializeInt((int)Math.Round(playerFirstCircle.Y)));
-                serialized.Add(0);
+                Circle playerFirstCircle = player.PlayerCircles[0];
+                serialized.AddRange(Serializer.SerializeDouble(playerFirstCircle.X));
+                serialized.AddRange(Serializer.SerializeDouble(playerFirstCircle.Y));
             }
 
             return serialized.ToArray();
