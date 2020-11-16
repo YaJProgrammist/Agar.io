@@ -70,23 +70,18 @@ namespace Server
             //UpdateBorderlineCoordinates();
         }
 
-        public List<Circle> TryEatPlayer(Player other)
+        public void TryEatPlayer(Player other, ref Dictionary<Circle, EatableObject> currentEatPairs)
         {
-            List<Circle> eatenCircles = new List<Circle>();
-
             for (int i = 0; i < this.PlayerCircles.Count; i++)
             {
                 for (int j = 0; j < other.PlayerCircles.Count; j++)
                 {
                     if (this.PlayerCircles[i].CanEatOtherObject(other.PlayerCircles[j]))
                     {
-                        eatenCircles.Add(other.PlayerCircles[j]);
-
+                        currentEatPairs.Add(this.PlayerCircles[i], other.PlayerCircles[j]);
                     }
                 }
             }
-
-            return eatenCircles;
         }
 
         private void UpdateBorderlineCoordinates()

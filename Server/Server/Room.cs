@@ -55,7 +55,7 @@ namespace Server
             }
 
             UpdatePositions();
-
+            UpdateEatenObjects();
 
             if (IsRoundOver())
             {
@@ -76,18 +76,23 @@ namespace Server
 
         private void UpdateEatenObjects()
         {
-            List<Player> newStatePlayers = players;
+            Dictionary<Circle, EatableObject> eatPairs = new Dictionary<Circle, EatableObject>();
 
             for (int playerInd1 = 0; playerInd1 < players.Count; playerInd1++)
             {
                 for (int playerInd2 = playerInd1 + 1; playerInd2 < players.Count; playerInd2++)
                 {
-                    players[playerInd1].TryEatPlayer(players[playerInd2]);
+                    players[playerInd1].TryEatPlayer(players[playerInd2], ref eatPairs);
+                    players[playerInd2].TryEatPlayer(players[playerInd1], ref eatPairs);
                 }
             }
 
-            newStatePlayers.Sort();
-            players = newStatePlayers;
+            foreach (var pair in eatPairs)
+            {
+                pair.Key.EatObject(pair.Value);
+            }
+
+            players.Sort();
 
             PositionsUpdated positionsUpdatedEvent = new PositionsUpdated(players);
             EventsSender.RegisterEvent(positionsUpdatedEvent);
@@ -95,7 +100,7 @@ namespace Server
 
         private bool IsRoundOver()
         {
-
+            return players.Count <= 1;
         }
     }
 }

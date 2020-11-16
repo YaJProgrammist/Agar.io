@@ -15,7 +15,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.RoundStarted);
+            serialized.Add((byte)GameEventTypes.PositionsUpdated);
 
             foreach (Player player in Players)
             {

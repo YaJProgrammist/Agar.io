@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Server
 {
@@ -53,6 +54,18 @@ namespace Server
             bool verticallyInside = (this.Y - Radius < otherBottomY) && (otherTopY < this.Y + Radius);
 
             return horizontallyInside && verticallyInside;
+        }
+
+        public void EatObject(EatableObject other)
+        {
+            if (other == null)
+            {
+                return;
+            }
+
+            this.Radius = Math.Sqrt(Math.Pow(this.Radius, 2) + Math.Pow(other.Radius, 2));
+
+            other.Remove();
         }
 
         private void UpdateBorderlineCells()

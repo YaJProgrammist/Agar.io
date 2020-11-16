@@ -15,7 +15,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.RoundOver);
+            serialized.Add((byte)GameEventTypes.EatableObjectRemoved);
 
             foreach (EatableObject eatableObject in NewEatableObjects)
             {
