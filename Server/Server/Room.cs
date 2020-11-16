@@ -82,7 +82,7 @@ namespace Server
             {
                 for (int playerInd2 = playerInd1 + 1; playerInd2 < players.Count; playerInd2++)
                 {
-                    
+                    players[playerInd1].TryEatPlayer(players[playerInd2]);
                 }
             }
 
