@@ -4,17 +4,14 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour
+public class CircleManager : MonoBehaviour
 {
-    public static PlayerManager Instance { get; private set; }
-
-    [SerializeField]
-    float speed;
+    public static CircleManager Instance { get; private set; }
+    public bool isMoving = false;
 
     private string name;
     private Rigidbody2D rb;
     private int id = 0;
-    private bool isMoving = false;
 
     private void CreateSingleton()
     {
@@ -60,7 +57,6 @@ public class PlayerManager : MonoBehaviour
     public void UpdateRadius(float radius)
     {
         transform.localScale = new Vector3(radius, radius, radius);
-        speed = 100 / radius;
     }
 
     public void UpdatePosition(Vector2 newPosition)
@@ -81,13 +77,5 @@ public class PlayerManager : MonoBehaviour
         name = nickname;
     }
 
-    public void StartMoving()
-    {
-        isMoving = true;
-    }
-
-    public void Die()
-    {
-        isMoving = false;
-    }
+    
 }

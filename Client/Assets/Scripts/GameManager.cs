@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public bool RoundIsRunning = false;
+    public bool PlayerIsDead = false;
 
     private void CreateSingleton()
     {
