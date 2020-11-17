@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Server
 {
@@ -8,28 +7,22 @@ namespace Server
     {
         public static List<byte> SerializeInt(int initialValue)
         {
-            List<byte> seriaized = new List<byte>();
+            List<byte> seriaized = new List<byte>{ 0, 0, 0, 0 };
 
-            while (initialValue > 0)
+            int i = 0;
+
+            while(i < 4 && initialValue > 0)
             {
-                seriaized.Add((byte)(initialValue % 256));
+                seriaized[i] = (byte)(initialValue % 256);
                 initialValue /= 256;
+                i++;
             }
 
             return seriaized;
         }
-
-        public static List<byte> SerializeDouble(int initialValue)
+        public static List<byte> SerializeDouble(double initialValue)
         {
-            List<byte> seriaized = new List<byte>();
-
-            while (initialValue > 0)
-            {
-                seriaized.Add((byte)(initialValue % 256));
-                initialValue /= 256;
-            }
-
-            return seriaized;
+            return SerializeInt((int)Math.Round(initialValue * 100));
         }
     }
 }

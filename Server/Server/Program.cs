@@ -12,7 +12,10 @@ namespace Server
 
         static void Main(string[] args)
         {
-            UdpClient sender = UDPServer.GetInstance();
+            Room room = new Room();
+            room.StartGame();
+            /*UdpClient sender = UDPServer.GetInstance();
+
             try
             {
                 while (true)
@@ -29,7 +32,7 @@ namespace Server
             finally
             {
                 sender.Close();
-            }
+            }*/
         }
     }
 }

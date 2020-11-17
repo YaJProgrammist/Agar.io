@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Server
 {
     public abstract class EatableObject
     {
-        private List<Circle> childCircles;
         public int Id { get; private set; }
-        public double X { get; protected set; }
-        public double Y { get; protected set; }
+        public Point Position { get; protected set; }
         public double Radius { get; set; }
 
-        public EatableObject(double x, double y)
+        public EatableObject(Point position)
         {
-            X = x;
-            Y = y;
+            Position = position;
         }
 
         public void SwallowEatableObject(EatableObject swallowed)

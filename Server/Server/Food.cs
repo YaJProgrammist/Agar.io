@@ -4,10 +4,8 @@
     {
         private const double FOOD_RADIUS = 0.5;
 
-        public Food(int x, int y) : base(x, y)
+        public Food(Point position) : base(position)
         {
-            X = x;
-            Y = y;
             Radius = FOOD_RADIUS;
         }
     }

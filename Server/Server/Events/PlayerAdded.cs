@@ -21,9 +21,7 @@ namespace Server.Events
 
             serialized.Add((byte)GameEventTypes.PlayerAdded);
             serialized.AddRange(Serializer.SerializeInt(PlayerId));
-            serialized.Add(0);
             serialized.AddRange(Serializer.SerializeInt(FirstCircleX));
-            serialized.Add(0);
             serialized.AddRange(Serializer.SerializeInt(FirstCircleY));
 
             return serialized.ToArray();

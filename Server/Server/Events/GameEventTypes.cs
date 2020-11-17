@@ -2,9 +2,12 @@
 {
     public enum GameEventTypes : byte
     {
+        PositionsUpdated,
         EatableObjectRemoved,
         PlayerAdded,
         PlayerLeft,
-        RoundOver
+        RoundStarted,
+        RoundOver,
+        CirclesAdded
     }
 }

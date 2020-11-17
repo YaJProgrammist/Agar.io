@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Server.Events
 {
@@ -21,9 +20,7 @@ namespace Server.Events
             foreach (Player player in PlayersTop)
             {
                 serialized.AddRange(Serializer.SerializeInt(player.Id));
-                serialized.Add(0);
-                serialized.AddRange(Serializer.SerializeInt((int)Math.Round(player.Score)));
-                serialized.Add(0);
+                serialized.AddRange(Serializer.SerializeDouble(player.Score));
             }
 
             return serialized.ToArray();

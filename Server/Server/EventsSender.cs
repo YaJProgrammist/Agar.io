@@ -1,35 +1,19 @@
 ﻿using Server.Events;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Server
 {
-    public class EventsSender
+    public static class EventsSender
     {
-        private static EventsSender instance = null;
-        private static readonly object lockObj = new object();
-        private int prevCircleId;
-
-        private EventsSender()
+        public static void RegisterEvent(GameEvent gameEvent)
         {
+            byte[] message = gameEvent.GetSerialized();
+            UDPServer.GetInstance().Send(message, message.Length);
         }
 
-        public static EventsSender GetInstance()
+        public static void RegisterEvent(GameEvent gameEvent, int receiverPlayerID)
         {
-            lock (lockObj)
-            {
-                if (instance == null)
-                {
-                    instance = new EventsSender();
-                }
-                return instance;
-            }
-        }
-
-        public void RegisterEvent(GameEvent gameEvent)
-        {
-            gameEvent.GetSerialized();
+            byte[] message = gameEvent.GetSerialized();
+            UDPServer.GetInstance().Send(message, message.Length);
         }
     }
 }
