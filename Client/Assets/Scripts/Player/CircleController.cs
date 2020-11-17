@@ -4,39 +4,22 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class CircleManager : MonoBehaviour
+public class CircleController : MonoBehaviour
 {
-    public static CircleManager Instance { get; private set; }
     public bool isMoving = false;
 
-    private string name;
     private Rigidbody2D rb;
     private int id = 0;
 
-    private void CreateSingleton()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-    }
-
-
-    private void InitializeManager()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
+    private Camera camera;
+    private CameraController cameraController;
 
     private void Awake()
     {
-        CreateSingleton();
-        InitializeManager();
+        rb = GetComponent<Rigidbody2D>();
+        camera = Camera.main;
+        cameraController = GetComponent<CameraController>();
+        cameraController.AddCircles(transform);
     }
 
     //each 0.2 sec
@@ -44,7 +27,7 @@ public class CircleManager : MonoBehaviour
     {
         if (isMoving)
         {
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePosition - transform.position).normalized;
             // send direction to server
 
@@ -72,9 +55,10 @@ public class CircleManager : MonoBehaviour
       
     }
 
-    public void SetPlayerName(string nickname)
+    public void KillCircle()
     {
-        name = nickname;
+        cameraController.RemoveCircles(transform);
+        Destroy(gameObject);
     }
 
     
