@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoundEndedMenuController : MonoBehaviour
 {
@@ -9,11 +10,33 @@ public class RoundEndedMenuController : MonoBehaviour
     GameObject roundEndedMenu;
 
     [SerializeField]
-    GameObject ratingStringPrefab;
+    RatingSectorController ratingSectorPrefab;
 
-    public void UpdateRating(List<Tuple<int, int>> rating)
+    [SerializeField]
+    GameObject grid;
+
+    private List<RatingSectorController> createdSectors;
+
+    private void Awake()
     {
+        createdSectors = new List<RatingSectorController>();
+    }
 
+    private void DeleteCurrentRating()
+    {
+        int counter = 0;
+        for (int i = 0; i < createdSectors.Count; i++)
+        {
+            Destroy(createdSectors[counter].gameObject);
+            createdSectors.RemoveAt(counter);
+            ++counter;
+        }
+    }
+
+    public void UpdateRating(List<Tuple<string, int>> rating)
+    {
+        // create new sectors and set grid as parent
+        // foreach new sector make sector.UpdateValues(playername, score)
     }
 
     public void Open()
@@ -23,6 +46,7 @@ public class RoundEndedMenuController : MonoBehaviour
 
     public void Close()
     {
+        DeleteCurrentRating();
         roundEndedMenu.SetActive(false);
     }
 }

@@ -11,15 +11,9 @@ public class CircleController : MonoBehaviour
     private Rigidbody2D rb;
     private int id = 0;
 
-    private Camera camera;
-    private CameraController cameraController;
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
-        camera = Camera.main;
-        cameraController = GetComponent<CameraController>();
-        cameraController.AddCircles(transform);
     }
 
     //each 0.2 sec
@@ -27,7 +21,7 @@ public class CircleController : MonoBehaviour
     {
         if (isMoving)
         {
-            Vector3 mousePosition = camera.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector2 direction = (mousePosition - transform.position).normalized;
             // send direction to server
 
@@ -57,7 +51,6 @@ public class CircleController : MonoBehaviour
 
     public void KillCircle()
     {
-        cameraController.RemoveCircles(transform);
         Destroy(gameObject);
     }
 

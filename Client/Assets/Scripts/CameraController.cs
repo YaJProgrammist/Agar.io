@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    SortedSet<Transform> circles;
+    private SortedSet<Transform> circles;
 
-    public void AddCircles(Transform newCircle)
+    public void AddCircle(Transform circle)
     {
-        circles.Add(newCircle);
+        circles.Add(circle);
     }
 
-    public void RemoveCircles(Transform circle)
+    public void RemoveCircle(Transform circle)
     {
         circles.Remove(circle);
     }

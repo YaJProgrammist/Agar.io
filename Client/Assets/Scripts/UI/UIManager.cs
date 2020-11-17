@@ -76,7 +76,7 @@ public class UIManager : MonoBehaviour
         playerLeftWindow.SetActive(true);
     }
 
-    public void ShowAndUpdateRating(List<Tuple<int, int>> rating)
+    public void ShowAndUpdateRating(List<Tuple<string, int>> rating)
     {
         playerLeftWindow.SetActive(false);
 
