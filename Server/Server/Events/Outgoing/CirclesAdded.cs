@@ -17,12 +17,12 @@ namespace Server.Events
 
             serialized.Add((byte)OutgoingGameEventTypes.CirclesAdded);
 
-            foreach (EatableObject eatableObject in NewCircles)
+            foreach (Circle circle in NewCircles)
             {
-                serialized.AddRange(Serializer.SerializeInt(eatableObject.Id));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.X));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.Y));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Radius));
+                serialized.AddRange(Serializer.SerializeInt(circle.Id));
+                serialized.AddRange(Serializer.SerializeDouble(circle.Position.X));
+                serialized.AddRange(Serializer.SerializeDouble(circle.Position.Y));
+                serialized.AddRange(Serializer.SerializeDouble(circle.Radius));
             }
 
             return serialized.ToArray();

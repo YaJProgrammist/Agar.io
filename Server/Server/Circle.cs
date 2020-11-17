@@ -5,7 +5,7 @@ namespace Server
 {
     public class Circle : EatableObject
     {
-        public const double MIN_RADIUS = 2;
+        public const double MIN_RADIUS = 0.02;
         private List<Circle> childCircles;
         public int LeftCellX { get; private set; }
         public int RightCellX { get; private set; }
@@ -25,7 +25,7 @@ namespace Server
 
         public void Move(double velocityX, double velocityY)
         {
-            double speed = 100 / Radius;
+            double speed = 1 / Radius;
             Position = new Point(Position.X + velocityX * speed, Position.Y + velocityY * speed);
 
             UpdateBorderlineCells();

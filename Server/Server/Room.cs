@@ -7,8 +7,8 @@ namespace Server
 {
     public class Room
     {
-        public const double HEIGHT = 10000;
-        public const double WIDTH = 10000;
+        public const double HEIGHT = 100;
+        public const double WIDTH = 100;
         public const int UPDATE_TIME_MS = 200;
         public const int WAITING_TIME_BEFORE_ROUND_MS = 10000;
         private const int FOOD_AMOUNT_PER_UPDATE = 100;
@@ -33,23 +33,6 @@ namespace Server
             rand = new Random();
             food = new List<Food>();
             playersWaitingForNextRound = new List<Player>();
-
-            // TODO delete
-            /*players.Add(new Player(10));
-            players.Add(new Player(11));
-            players.Add(new Player());
-            players.Add(new Player());
-            players.Add(new Player());
-            players.Add(new Player());
-
-            players[0].SetVelocity(0.5, 0.5);
-            players[1].SetVelocity(-0.5, -0.25);
-            players[2].SetVelocity(1, 1);
-            players[3].SetVelocity(-0.1, 0.6);
-            players[4].SetVelocity(-0.7, 0.7);
-            players[5].SetVelocity(1, 0);*/
-            // TODO delete
-
         }
 
         public static Room GetInstance()

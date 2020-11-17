@@ -9,13 +9,16 @@ namespace Server
 {
     public class UDPServer
     {
+        private const int SERVER_PORT = 8001;
         private static UDPServer instance = null;
         private static readonly object lockObj = new object();
         private Dictionary<int, Address> playerAddresses;
+        private UdpClient server;
 
         private UDPServer()
         {
             playerAddresses = new Dictionary<int, Address>();
+            server = new UdpClient(SERVER_PORT);
 
             Thread clientListener = new Thread(ListenToAll);
             clientListener.Start();
@@ -36,11 +39,19 @@ namespace Server
 
         public void AddPlayerClient(int playerId, Address playerAddress)
         {
-            if (!playerAddresses.ContainsKey(playerId))
+            try
             {
-                playerAddresses.Add(playerId, playerAddress);
-                Thread clientListener = new Thread(ListenToClient);
-                clientListener.Start(playerId);
+                if (!playerAddresses.ContainsKey(playerId))
+                {
+                    Console.WriteLine("Player address added");
+                    playerAddresses.Add(playerId, playerAddress);
+                    //Thread clientListener = new Thread(ListenToClient);
+                    //clientListener.Start(playerId);
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
@@ -62,12 +73,10 @@ namespace Server
 
         public void SendMessageToPlayer(byte[] message, int messageLength, int playerId)
         {
-            UdpClient client = new UdpClient();
-
             try
             {
-                client.Connect(playerAddresses[playerId].Server, playerAddresses[playerId].Port);
-                client.Send(message, messageLength);
+                server.Connect(playerAddresses[playerId].Server, playerAddresses[playerId].Port);
+                server.Send(message, messageLength);
             }
             catch (SocketException e)
             {
@@ -77,18 +86,16 @@ namespace Server
             {
                 Console.WriteLine("Exception: {0}", e.Message);
             }
-
-            client.Close();
         }
 
         private void ListenToAll()
         {
-            UdpClient client = new UdpClient();
-
             while(true)
             {
-                byte[] package = client.ReceiveAsync().Result.Buffer;
+                var result = await server.ReceiveAsync();
+                byte[] package = result.Buffer;
                 IncomingPackagesManager.HandlePackage(package);
+                Console.WriteLine("here");
             }
         }
 
@@ -106,15 +113,18 @@ namespace Server
             long ipAddress = (long)(uint)IPAddress.NetworkToHostOrder((int)IPAddress.Parse(playerAddress.Server).Address);
             IPEndPoint playerIPEndPoint = new IPEndPoint(ipAddress, playerAddress.Port);
 
-            UdpClient client = new UdpClient();
-
             while (playerAddresses.ContainsKey(playerId))
             {
-                byte[] package = client.Receive(ref playerIPEndPoint);
-                IncomingPackagesManager.HandlePackage(package, playerId);
+                try
+                {
+                    byte[] package = server.Receive(ref playerIPEndPoint);
+                    IncomingPackagesManager.HandlePackage(package, playerId);
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
-
-            client.Close();
         }
     }
 }

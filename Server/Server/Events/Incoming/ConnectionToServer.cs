@@ -4,14 +4,14 @@ namespace Server.Events
 {
     public class ConnectionToServer : IncomingGameEvent
     {
-        private const int PLAYERS_PORT = 8001;
+        private const int PLAYERS_PORT = 8002;
         private string playerIP;
 
         public ConnectionToServer(byte[] package)
         {
             if (package[0] != (byte)IncomingGameEventTypes.ConnectionToServer || package.Length != 5)
             {
-                Console.WriteLine("incorrect package");
+                Console.WriteLine("Incorrect package");
                 return;
             }
 

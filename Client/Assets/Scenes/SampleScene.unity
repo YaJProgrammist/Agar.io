@@ -1248,9 +1248,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   roundEndedMenu: {fileID: 243273422}
-  ratingSectorPrefab: {fileID: 4690013727983674968, guid: c0fd219234a6f4c8ba29df952a520c8b,
-    type: 3}
-  grid: {fileID: 464498017}
+  ratingSectorPrefab: {fileID: 0}
+  grid: {fileID: 0}
 --- !u!114 &1112619304
 MonoBehaviour:
   m_ObjectHideFlags: 0
