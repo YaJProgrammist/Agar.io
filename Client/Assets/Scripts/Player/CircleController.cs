@@ -4,39 +4,16 @@ using UnityEngine;
 using System;
 using UnityEngine.UI;
 
-public class CircleManager : MonoBehaviour
+public class CircleController : MonoBehaviour
 {
-    public static CircleManager Instance { get; private set; }
     public bool isMoving = false;
 
-    private string name;
     private Rigidbody2D rb;
     private int id = 0;
 
-    private void CreateSingleton()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            //DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
-    }
-
-
-    private void InitializeManager()
-    {
-        rb = GetComponent<Rigidbody2D>();
-    }
-
     private void Awake()
     {
-        CreateSingleton();
-        InitializeManager();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     //each 0.2 sec
@@ -72,9 +49,9 @@ public class CircleManager : MonoBehaviour
       
     }
 
-    public void SetPlayerName(string nickname)
+    public void KillCircle()
     {
-        name = nickname;
+        Destroy(gameObject);
     }
 
     

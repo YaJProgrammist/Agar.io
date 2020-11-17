@@ -26,7 +26,7 @@ public class StartMenuController : MonoBehaviour
         playButton.onClick.AddListener(() => {
             if (nameField.text != "")
             {
-                CircleManager.Instance.SetPlayerName(nameField.text);
+                GameManager.Instance.Name = nameField.text;
                 errorField.gameObject.SetActive(false);
                 Close();
 
