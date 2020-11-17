@@ -2,7 +2,7 @@
 
 namespace Server.Events
 {
-    public class EatableObjectRemoved : GameEvent
+    public class EatableObjectRemoved : OutgoingGameEvent
     {
         public int EatenObjectId { get; set; }
 
@@ -15,7 +15,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.EatableObjectRemoved);
+            serialized.Add((byte)OutgoingGameEventTypes.EatableObjectRemoved);
             serialized.AddRange(Serializer.SerializeInt(EatenObjectId));
 
             return serialized.ToArray();

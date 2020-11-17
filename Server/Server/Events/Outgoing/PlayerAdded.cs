@@ -2,7 +2,7 @@
 
 namespace Server.Events
 {
-    public class PlayerAdded : GameEvent
+    public class PlayerAdded : OutgoingGameEvent
     {
         public int PlayerId { get; set; }
         public int FirstCircleX { get; set; }
@@ -19,7 +19,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.PlayerAdded);
+            serialized.Add((byte)OutgoingGameEventTypes.PlayerAdded);
             serialized.AddRange(Serializer.SerializeInt(PlayerId));
             serialized.AddRange(Serializer.SerializeInt(FirstCircleX));
             serialized.AddRange(Serializer.SerializeInt(FirstCircleY));

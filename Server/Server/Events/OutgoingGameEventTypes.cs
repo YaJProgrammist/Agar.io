@@ -1,6 +1,6 @@
 ﻿namespace Server.Events
 {
-    public enum GameEventTypes : byte
+    public enum OutgoingGameEventTypes : byte
     {
         PositionsUpdated,
         EatableObjectRemoved,
@@ -8,6 +8,8 @@
         PlayerLeft,
         RoundStarted,
         RoundOver,
-        CirclesAdded
+        CirclesAdded,
+        FoodAdded,
+        PlayerDied
     }
 }

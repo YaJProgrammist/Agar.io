@@ -2,7 +2,7 @@
 
 namespace Server.Events
 {
-    public class RoundOver : GameEvent
+    public class RoundOver : OutgoingGameEvent
     {
         public List<Player> PlayersTop { get; set; }
 
@@ -15,7 +15,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.RoundOver);
+            serialized.Add((byte)OutgoingGameEventTypes.RoundOver);
 
             foreach (Player player in PlayersTop)
             {

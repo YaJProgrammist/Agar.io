@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Server
 {
@@ -11,28 +10,33 @@ namespace Server
         public const double HEIGHT = 10000;
         public const double WIDTH = 10000;
         public const int UPDATE_TIME_MS = 200;
+        public const int WAITING_TIME_BEFORE_ROUND_MS = 10000;
         private const int FOOD_AMOUNT_PER_UPDATE = 100;
         private const int FOOD_AMOUNT_ON_START = 1000;
 
+        private static Room instance = null;
+        private static readonly object lockObj = new object();
         private List<Cell> cells;
         private List<Player> players;
-        private List<EatableObject> food;
+        private List<Player> playersWaitingForNextRound;
+        private List<Food> food;
         private Thread gameRunningThread;
         private Random rand;
 
         public bool IsGameRunning { get; private set; }
 
-        public Room()
+        private Room()
         {
             cells = new List<Cell>();
             players = new List<Player>();
             IsGameRunning = false;
             rand = new Random();
-            food = new List<EatableObject>();
+            food = new List<Food>();
+            playersWaitingForNextRound = new List<Player>();
 
             // TODO delete
-            players.Add(new Player());
-            players.Add(new Player());
+            /*players.Add(new Player(10));
+            players.Add(new Player(11));
             players.Add(new Player());
             players.Add(new Player());
             players.Add(new Player());
@@ -43,16 +47,26 @@ namespace Server
             players[2].SetVelocity(1, 1);
             players[3].SetVelocity(-0.1, 0.6);
             players[4].SetVelocity(-0.7, 0.7);
-            players[5].SetVelocity(1, 0);
+            players[5].SetVelocity(1, 0);*/
             // TODO delete
 
         }
 
+        public static Room GetInstance()
+        {
+            lock (lockObj)
+            {
+                if (instance == null)
+                {
+                    instance = new Room();
+                }
+
+                return instance;
+            }
+        }
+
         public void StartGame()
         {
-            IsGameRunning = true;
-            GeneratePlayersFirstCircles();
-            GenerateFood(FOOD_AMOUNT_ON_START);
             gameRunningThread = new Thread(RunGame);
             gameRunningThread.Start();
         }
@@ -63,6 +77,11 @@ namespace Server
             {
                 IsGameRunning = false;
             }
+        }
+
+        public void AddPlayer(Player player)
+        {
+            playersWaitingForNextRound.Add(player);
         }
 
         private void GeneratePlayersFirstCircles()
@@ -118,11 +137,28 @@ namespace Server
 
         private void RunGame()
         {
-            while (IsGameRunning)
+            while (true)
             {
-                Thread.Sleep(UPDATE_TIME_MS);
-                Update();
+                Thread.Sleep(WAITING_TIME_BEFORE_ROUND_MS);
+                RefreshRoom();
+                IsGameRunning = true;
+
+                while (IsGameRunning)
+                {
+                    Thread.Sleep(UPDATE_TIME_MS);
+                    Update();
+                }                
             }
+        }
+
+        private void RefreshRoom()
+        {
+            players.AddRange(playersWaitingForNextRound);
+            playersWaitingForNextRound.Clear();
+            food.Clear();
+
+            GeneratePlayersFirstCircles();
+            GenerateFood(FOOD_AMOUNT_ON_START);
         }
 
         private void Update()
@@ -156,7 +192,7 @@ namespace Server
         private void GenerateFood(int amount)
         {
             Random rand = new Random();
-            List<EatableObject> newFood = new List<EatableObject>();
+            List<Food> newFood = new List<Food>();
 
             for (int i = 0; i < amount; i++)
             {
@@ -166,7 +202,7 @@ namespace Server
 
             food.AddRange(newFood);
 
-            EventsSender.RegisterEvent(new EatableObjectsAdded(newFood));
+            EventsSender.RegisterEvent(new FoodAdded(newFood));
         }
 
         private void UpdatePositions()

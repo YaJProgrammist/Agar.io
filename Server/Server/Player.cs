@@ -18,8 +18,9 @@ namespace Server
         public double TopY { get; private set; }
         public double BottomY { get; private set; }
 
-        public Player()
+        public Player(int playerId)
         {
+            Id = playerId;
             PlayerCircles = new List<Circle>();
             IsPresent = true;
         }

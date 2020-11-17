@@ -2,11 +2,11 @@
 
 namespace Server.Events
 {
-    public class PLayerLeft : GameEvent
+    public class PlayerLeft : OutgoingGameEvent
     {
         public int PlayerId { get; set; }
 
-        public PLayerLeft(int playerId)
+        public PlayerLeft(int playerId)
         {
             PlayerId = playerId;
         }
@@ -15,7 +15,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.PlayerLeft);
+            serialized.Add((byte)OutgoingGameEventTypes.PlayerLeft);
             serialized.AddRange(Serializer.SerializeInt(PlayerId));
 
             return serialized.ToArray();

@@ -2,22 +2,22 @@
 
 namespace Server.Events
 {
-    public class EatableObjectsAdded : GameEvent
+    public class CirclesAdded : OutgoingGameEvent
     {
-        public List<EatableObject> NewEatableObjects { get; set; }
+        public List<Circle> NewCircles { get; set; }
 
-        public EatableObjectsAdded(List<EatableObject> eatableObjects)
+        public CirclesAdded(List<Circle> circles)
         {
-            NewEatableObjects = eatableObjects;
+            NewCircles = circles;
         }
 
         public override byte[] GetSerialized()
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.EatableObjectRemoved);
+            serialized.Add((byte)OutgoingGameEventTypes.CirclesAdded);
 
-            foreach (EatableObject eatableObject in NewEatableObjects)
+            foreach (EatableObject eatableObject in NewCircles)
             {
                 serialized.AddRange(Serializer.SerializeInt(eatableObject.Id));
                 serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.X));

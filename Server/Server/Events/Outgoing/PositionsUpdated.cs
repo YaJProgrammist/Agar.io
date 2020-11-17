@@ -2,7 +2,7 @@
 
 namespace Server.Events
 {
-    public class PositionsUpdated : GameEvent
+    public class PositionsUpdated : OutgoingGameEvent
     {
         public List<Player> Players { get; set; }
 
@@ -15,7 +15,7 @@ namespace Server.Events
         {
             List<byte> serialized = new List<byte>();
 
-            serialized.Add((byte)GameEventTypes.PositionsUpdated);
+            serialized.Add((byte)OutgoingGameEventTypes.PositionsUpdated);
 
             foreach (Player player in Players)
             {
