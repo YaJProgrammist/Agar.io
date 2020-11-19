@@ -17,7 +17,7 @@ namespace Server
         private static Room instance = null;
         private static readonly object lockObj = new object();
         private List<Cell> cells;
-        private List<Player> players;
+        public List<Player> Players { get; private set; }
         private List<Player> playersWaitingForNextRound;
         private List<Food> food;
         private Thread gameRunningThread;
@@ -195,7 +195,7 @@ namespace Server
                 player.Move();
             }
 
-            PositionsUpdated positionsUpdatedEvent = new PositionsUpdated(players);
+            CirclesFrameUpdate positionsUpdatedEvent = new CirclesFrameUpdate(players);
             EventsSender.RegisterEvent(positionsUpdatedEvent);
         }
 
@@ -219,7 +219,7 @@ namespace Server
 
             players.Sort();
 
-            PositionsUpdated positionsUpdatedEvent = new PositionsUpdated(players);
+            CirclesFrameUpdate positionsUpdatedEvent = new CirclesFrameUpdate(players);
             EventsSender.RegisterEvent(positionsUpdatedEvent);
         }
 

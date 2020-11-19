@@ -9,7 +9,7 @@ namespace Server.Events
 
         public ConnectionToServer(byte[] package)
         {
-            if (package[0] != (byte)IncomingGameEventTypes.ConnectionToServer || package.Length != 5)
+            if (package.Length != 5 || package[0] != (byte)IncomingGameEventTypes.ConnectionToServer)
             {
                 Console.WriteLine("Incorrect package");
                 return;

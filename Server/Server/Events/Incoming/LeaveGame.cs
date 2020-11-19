@@ -2,13 +2,13 @@
 
 namespace Server.Events
 {
-    public class Split : IncomingGameEvent
+    public class LeaveGame : IncomingGameEvent
     {
         private int playerId;
 
-        public Split(byte[] package)
+        public LeaveGame(byte[] package)
         {
-            if (package.Length != 5 || package[0] != (byte)IncomingGameEventTypes.Split)
+            if (package.Length != 5 || package[0] != (byte)IncomingGameEventTypes.LeaveGame)
             {
                 Console.WriteLine("Incorrect package");
                 return;
@@ -19,7 +19,7 @@ namespace Server.Events
 
         public override void Handle()
         {
-            Room.GetInstance().Players.Find(player => player.Id == playerId).Split();
+            // TODO player leaves
         }
     }
 }
