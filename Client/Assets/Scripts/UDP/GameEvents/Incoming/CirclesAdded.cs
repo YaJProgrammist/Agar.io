@@ -22,9 +22,9 @@ public class CirclesAdded : IncomingGameEvent
         circleY = new List<double>();
         circleRadius = new List<double>();
 
-        playerId = Deserializer.DeserializeInt(package, 0);
+        playerId = Deserializer.DeserializeInt(package, 1);
 
-        int i = 4;
+        int i = 5;
         while (i < package.Length)
         {
             circlesId.Add(Deserializer.DeserializeInt(package, i));

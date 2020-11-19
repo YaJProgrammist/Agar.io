@@ -23,7 +23,7 @@ public class RoundStarted : IncomingGameEvent
         circleY = new List<double>();
         circleRadius = new List<double>();
 
-        int i = 0;
+        int i = 1;
         while (i < package.Length)
         {
             playersId.Add(Deserializer.DeserializeInt(package, i));

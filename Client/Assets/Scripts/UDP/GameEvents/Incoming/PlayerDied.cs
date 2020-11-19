@@ -12,7 +12,7 @@ public class PlayerDied : IncomingGameEvent
             return;
         }
 
-        playerId = Deserializer.DeserializeInt(package, 0);
+        playerId = Deserializer.DeserializeInt(package, 1);
     }
 
     public override void Handle()

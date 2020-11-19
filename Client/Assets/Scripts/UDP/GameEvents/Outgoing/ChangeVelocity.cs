@@ -17,7 +17,7 @@ public class ChangeVelocity : OutgoingGameEvent
     {
         List<byte> serialized = new List<byte>();
 
-        serialized.Add((byte)OutgoingGameEventTypes.Split);
+        serialized.Add((byte)OutgoingGameEventTypes.ChangeVelocity);
 
         serialized.AddRange(Serializer.SerializeInt(myPlayerId));
         serialized.AddRange(Serializer.SerializeDouble(velocityX));

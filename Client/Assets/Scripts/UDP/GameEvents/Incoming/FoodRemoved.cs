@@ -15,7 +15,7 @@ public class FoodRemoved : IncomingGameEvent
 
         foodId = new List<int>();
 
-        int i = 0;
+        int i = 1;
         while (i < package.Length)
         {
             foodId.Add(Deserializer.DeserializeInt(package, i));

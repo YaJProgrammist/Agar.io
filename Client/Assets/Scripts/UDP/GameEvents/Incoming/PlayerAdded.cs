@@ -12,7 +12,7 @@ public class PlayerAdded : IncomingGameEvent
             return;
         }
 
-        myPlayerId = Deserializer.DeserializeInt(package, 0);
+        myPlayerId = Deserializer.DeserializeInt(package, 1);
     }
 
     public override void Handle()

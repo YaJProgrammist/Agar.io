@@ -15,7 +15,7 @@ public class CirclesRemoved : IncomingGameEvent
 
         circlesId = new List<int>();
 
-        int i = 0;
+        int i = 1;
         while (i < package.Length)
         {
             circlesId.Add(Deserializer.DeserializeInt(package, i));

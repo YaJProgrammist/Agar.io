@@ -17,7 +17,7 @@ public class RoundOver : IncomingGameEvent
         playersId = new List<int>();
         playerScore = new List<double>();
 
-        int i = 0;
+        int i = 1;
         while (i < package.Length)
         {
             playersId.Add(Deserializer.DeserializeInt(package, i));
