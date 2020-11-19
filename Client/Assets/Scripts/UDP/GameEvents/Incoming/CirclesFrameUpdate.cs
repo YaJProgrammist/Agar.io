@@ -1,23 +1,21 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RoundStarted : IncomingGameEvent
+public class CirclesFrameUpdate : IncomingGameEvent
 {
-    private List<int> playersId;
     private List<int> circleId;
     private List<double> circleX;
     private List<double> circleY;
     private List<double> circleRadius;
 
-    public RoundStarted(byte[] package)
+    public CirclesFrameUpdate(byte[] package)
     {
-        if (package[0] != (byte)IncomingGameEventTypes.RoundStarted)
+        if (package[0] != (byte)IncomingGameEventTypes.CirclesFrameUpdate)
         {
             Debug.LogError("Incorrect package");
             return;
         }
 
-        playersId = new List<int>();
         circleId = new List<int>();
         circleX = new List<double>();
         circleY = new List<double>();
@@ -26,9 +24,6 @@ public class RoundStarted : IncomingGameEvent
         int i = 0;
         while (i < package.Length)
         {
-            playersId.Add(Deserializer.DeserializeInt(package, i));
-            i += 4;
-
             circleId.Add(Deserializer.DeserializeInt(package, i));
             i += 4;
 

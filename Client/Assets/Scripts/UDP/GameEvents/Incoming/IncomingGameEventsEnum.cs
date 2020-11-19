@@ -1,6 +1,6 @@
 ﻿public enum IncomingGameEventTypes : byte
 {
-    PositionsUpdated,
+    CirclesFrameUpdate,
     CirclesRemoved,
     FoodRemoved,
     PlayerAdded,

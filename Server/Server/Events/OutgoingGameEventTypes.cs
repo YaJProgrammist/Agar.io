@@ -2,7 +2,7 @@
 {
     public enum OutgoingGameEventTypes : byte
     {
-        PositionsUpdated,
+        CirclesFrameUpdate,
         CirclesRemoved,
         FoodRemoved,
         PlayerAdded,

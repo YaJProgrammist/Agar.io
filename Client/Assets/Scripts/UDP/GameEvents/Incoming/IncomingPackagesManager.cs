@@ -1,5 +1,4 @@
-﻿using Server.Events;
-using System;
+﻿using System;
 
 public static class IncomingPackagesManager
 {
