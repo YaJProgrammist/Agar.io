@@ -1,4 +1,5 @@
 ﻿using System;
+using Server.Events;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
@@ -45,6 +46,8 @@ namespace Server
                     newCircles.Add(new Circle(circle.Position, circle.Radius));
                 }
             }
+
+            EventsSender.RegisterEvent(new CirclesAdded(newCircles, this.Id));
 
             PlayerCircles.AddRange(newCircles);
         }

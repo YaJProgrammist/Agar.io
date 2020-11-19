@@ -3,7 +3,8 @@
     public enum OutgoingGameEventTypes : byte
     {
         PositionsUpdated,
-        EatableObjectRemoved,
+        CirclesRemoved,
+        FoodRemoved,
         PlayerAdded,
         PlayerLeft,
         RoundStarted,

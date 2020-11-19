@@ -1,39 +1,42 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class RoundStarted : IncomingGameEvent
+public class CirclesAdded : IncomingGameEvent
 {
-    private List<int> playersId;
-    private List<int> circleId;
+    private List<int> circlesId; 
     private List<double> circleX;
     private List<double> circleY;
+    private List<double> circleRadius;
+    private int playerId;
 
-    public RoundStarted(byte[] package)
+    public CirclesAdded(byte[] package)
     {
-        if (package[0] != (byte)IncomingGameEventTypes.RoundStarted)
+        if (package[0] != (byte)IncomingGameEventTypes.CirclesAdded)
         {
             Debug.LogError("Incorrect package");
             return;
         }
 
-        playersId = new List<int>();
-        circleId = new List<int>();
+        circlesId = new List<int>();
         circleX = new List<double>();
         circleY = new List<double>();
+        circleRadius = new List<double>();
 
-        int i = 0;
+        playerId = Deserializer.DeserializeInt(package, 0);
+
+        int i = 4;
         while (i < package.Length)
         {
-            playersId.Add(Deserializer.DeserializeInt(package, i));
-            i += 4;
-
-            circleId.Add(Deserializer.DeserializeInt(package, i));
+            circlesId.Add(Deserializer.DeserializeInt(package, i));
             i += 4;
 
             circleX.Add(Deserializer.DeserializeDouble(package, i));
             i += 4;
 
             circleY.Add(Deserializer.DeserializeDouble(package, i));
+            i += 4;
+
+            circleRadius.Add(Deserializer.DeserializeDouble(package, i));
             i += 4;
         }
     }
