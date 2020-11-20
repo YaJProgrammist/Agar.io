@@ -2,6 +2,7 @@
 using Server.Events.Incoming;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Server
@@ -51,11 +52,17 @@ namespace Server
             {
                 IsGameRunning = false;
             }
+
+            RoundOver roundOverGameEvent = new RoundOver(players);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundOverGameEvent));
         }
 
         public void AddPlayer(Player player)
         {
             playersWaitingForNextRound.Add(player);
+
+            PlayerAdded playerAddedGameEvent = new PlayerAdded(player.Id);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(playerAddedGameEvent, player.Id));
         }
 
         public void RemovePlayer(int playerId)
@@ -149,6 +156,9 @@ namespace Server
                 RefreshRoom();
                 IsGameRunning = true;
 
+                RoundStarted roundStartedGameEvent = new RoundStarted(players);
+                OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
+
                 while (IsGameRunning)
                 {
                     Thread.Sleep(UPDATE_TIME_MS);
@@ -239,18 +249,35 @@ namespace Server
 
         private void UpdateEatenObjects()
         {
-            Dictionary<Circle, EatableObject> eatPairs = new Dictionary<Circle, EatableObject>();
+            Dictionary<Circle, EatableObject> eatPairsCircles = new Dictionary<Circle, EatableObject>();
+            Dictionary<Circle, EatableObject> eatPairsFood = new Dictionary<Circle, EatableObject>();
 
             for (int playerInd1 = 0; playerInd1 < players.Count; playerInd1++)
             {
                 for (int playerInd2 = playerInd1 + 1; playerInd2 < players.Count; playerInd2++)
                 {
-                    players[playerInd1].CalculateCirclesEatPairs(players[playerInd2], ref eatPairs);
-                    players[playerInd2].CalculateCirclesEatPairs(players[playerInd1], ref eatPairs);
+                    players[playerInd1].CalculateCirclesEatPairs(players[playerInd2], ref eatPairsCircles);
+                    players[playerInd2].CalculateCirclesEatPairs(players[playerInd1], ref eatPairsCircles);
+                }
+                
+                foreach (Food foodItem in food)
+                {
+                    players[playerInd1].CalculateCirclesEatPairs(foodItem, ref eatPairsFood);
                 }
             }
 
-            foreach (var pair in eatPairs)
+            CirclesRemoved circlesRemovedGameEvent = new CirclesRemoved(eatPairsCircles.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesRemovedGameEvent));
+
+            FoodRemoved foodRemovedGameEvent = new FoodRemoved(eatPairsFood.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(foodRemovedGameEvent));
+
+            foreach (var pair in eatPairsCircles)
+            {
+                pair.Key.EatObject(pair.Value);
+            }
+
+            foreach (var pair in eatPairsFood)
             {
                 pair.Key.EatObject(pair.Value);
             }
