@@ -45,6 +45,6 @@ public class RoundStarted : IncomingGameEvent
 
     public override void Handle()
     {
-            
+        GameManager.Instance.StartRound();
     }
 }

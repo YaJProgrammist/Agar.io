@@ -76,12 +76,12 @@ public class UIManager : MonoBehaviour
         playerLeftWindow.SetActive(true);
     }
 
-    public void ShowAndUpdateRating(List<Tuple<string, int>> rating)
+    public void ShowAndUpdateRating(List<int> playersId, List<double> playerScore)
     {
         playerLeftWindow.SetActive(false);
 
         roundEndedMenuController.Open();
-        roundEndedMenuController.UpdateRating(rating);
+        roundEndedMenuController.UpdateRating(playersId, playerScore);
     }
 
 }

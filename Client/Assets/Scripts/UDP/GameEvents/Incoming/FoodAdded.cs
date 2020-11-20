@@ -40,6 +40,6 @@ public class FoodAdded : IncomingGameEvent
 
     public override void Handle()
     {
-            
+        FoodManager.Instance.SpawnFood(foodId, foodX, foodY, foodRadius);
     }
 }

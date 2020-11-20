@@ -30,6 +30,7 @@ public class RoundOver : IncomingGameEvent
 
     public override void Handle()
     {
-            
+        GameManager.Instance.EndRound();
+        UIManager.Instance.ShowAndUpdateRating(playersId, playerScore);
     }
 }

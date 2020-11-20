@@ -35,6 +35,6 @@ public class CirclesRemoved : IncomingGameEvent
 
     public override void Handle()
     {
-
+        PlayerManager.Instance.RemoveCircles(playersId, circlesId);
     }
 }

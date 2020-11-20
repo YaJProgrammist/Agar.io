@@ -17,6 +17,6 @@ public class PlayerAdded : IncomingGameEvent
 
     public override void Handle()
     {
-        
+        PlayerManager.Instance.currentPlayerId = myPlayerId;
     }
 }

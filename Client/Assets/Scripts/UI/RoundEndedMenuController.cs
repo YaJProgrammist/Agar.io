@@ -15,11 +15,18 @@ public class RoundEndedMenuController : MonoBehaviour
     [SerializeField]
     GameObject grid;
 
+    [SerializeField]
+    Button restartButton;
+
     private List<RatingSectorController> createdSectors;
 
     private void Awake()
     {
         createdSectors = new List<RatingSectorController>();
+
+        restartButton.onClick.AddListener(()=> {
+            GameManager.Instance.StartGame();
+        });
     }
 
     private void DeleteCurrentRating()
@@ -33,10 +40,15 @@ public class RoundEndedMenuController : MonoBehaviour
         }
     }
 
-    public void UpdateRating(List<Tuple<string, int>> rating)
+    public void UpdateRating(List<int> playersId, List<double> playerScore)
     {
-        // create new sectors and set grid as parent
-        // foreach new sector make sector.UpdateValues(playername, score)
+        for (int i = 0; i < playersId.Count; i++)
+        {
+            RatingSectorController newSector = Instantiate(ratingSectorPrefab);
+            newSector.transform.SetParent(grid.transform);
+
+            newSector.UpdateValues(playersId[i], playerScore[i]);
+        }
     }
 
     public void Open()

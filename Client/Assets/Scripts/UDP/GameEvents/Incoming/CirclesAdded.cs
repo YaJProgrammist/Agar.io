@@ -43,6 +43,6 @@ public class CirclesAdded : IncomingGameEvent
 
     public override void Handle()
     {
-            
+        PlayerManager.Instance.AddCircles(playerId, circlesId, circleX, circleY, circleRadius); 
     }
 }

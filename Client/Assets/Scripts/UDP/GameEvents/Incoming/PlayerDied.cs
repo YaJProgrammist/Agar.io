@@ -17,6 +17,8 @@ public class PlayerDied : IncomingGameEvent
 
     public override void Handle()
     {
-        
+        //to do rewrite
+        if (playerId == PlayerManager.Instance.currentPlayerId)
+            GameManager.Instance.CurrentPlayerLeft();
     }
 }

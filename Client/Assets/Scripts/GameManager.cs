@@ -4,18 +4,10 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
-
     public string Name;
 
     public bool RoundIsRunning = false;
     public bool PlayerIsDead = false;
-
-    [SerializeField]
-    CircleController circlePrefab;
-
-    private SortedSet<CircleController> circles;
-
-    private CameraController cameraController;
 
     private void CreateSingleton()
     {
@@ -33,8 +25,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeManager()
     {
-        circles = new SortedSet<CircleController>();
-        cameraController = Camera.main.GetComponent<CameraController>();
+
     }
 
     private void Awake()
@@ -52,41 +43,15 @@ public class GameManager : MonoBehaviour
     public void StartGame()
     {
         UIManager.Instance.ShowStartMenu();
-
-        //create main circle
-        CircleController circle = Instantiate(circlePrefab);
-        //AddCircle(circle);
-        //circle.SetPlayerStartValues();
     }
 
-    public void AddPlayer()
+    public void CurrentPlayerLeft()
     {
-        // send on new player server and wait till round will start
-        UIManager.Instance.ShowWaitingWindow();
-    }
+        RoundIsRunning = true;
+        PlayerIsDead = true;
 
-    public void AddCircle()
-    {
-        CircleController newCircle = Instantiate(circlePrefab);
-        //newCircle.GetComponent<CircleController>().SetPlayerStartValues();
-
-        //add circle only after updating circle transform
-        cameraController.AddCircle(newCircle.gameObject.transform);
-
-    }
-
-    public void RemoveCircle()
-    {
-        // find 
-        //GameObject temp =
-        //cameraController.RemoveCircle(temp.gameObject.transform);
-        //remove from sorted set
-        // call .killcircle() on temp
-    }
-
-    public void PlayerLeft()
-    {
         UIManager.Instance.ShowPlayerLeftWindow();
+        PlayerManager.Instance.KillCurrentPlayer();
     }
 
     public void StartRound()
@@ -94,12 +59,50 @@ public class GameManager : MonoBehaviour
         RoundIsRunning = true;
 
         UIManager.Instance.CloseAllWindows();
+
     }
 
     public void EndRound()
     {
         RoundIsRunning = false;
-        //UIManager.Instance.ShowAndUpdateRating();
+        PlayerIsDead = true;
+        PlayerManager.Instance.KillEveryone();
+    }
+
+
+    //put next methods into server connection class
+    public void SendDirection()
+    {
+        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - Vector3.zero).normalized;
+        //send on server current player direction
+    }
+
+    public void DivideCurrentPlayer()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            // send on server player want to split
+        }
+    }
+
+    public void LeaveGame()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            CurrentPlayerLeft();
+            // send on server player left outgo 
+        }
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if (RoundIsRunning && !PlayerIsDead)
+        {
+            DivideCurrentPlayer();
+            SendDirection();
+            LeaveGame();
+        }
     }
 
 }

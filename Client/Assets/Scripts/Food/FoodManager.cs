@@ -7,7 +7,7 @@ public class FoodManager : MonoBehaviour
     public static FoodManager Instance { get; private set; }
 
     [SerializeField]
-    GameObject foodPrefab;
+    FoodParticleController foodPrefab;
 
     [SerializeField]
     GameObject foodParent;
@@ -15,7 +15,7 @@ public class FoodManager : MonoBehaviour
     [SerializeField]
     Color[] colors;
 
-    private List<GameObject> existedFood;
+    private List<FoodParticleController> existedFood;
 
     private void CreateSingleton()
     {
@@ -36,37 +36,43 @@ public class FoodManager : MonoBehaviour
         CreateSingleton();
     }
 
-    public void SpawnOneFoodItem(float x, float y, float radius)
+    public void SpawnFood(List<int> foodId, List<double> foodX, List<double> foodY, List<double> foodRadius)
     {
-        GameObject newFoodItem = Instantiate(foodPrefab);
-        newFoodItem.transform.position = new Vector2(x, y);
+        for (int i = 0; i < existedFood.Count; i++)
+        {
+            SpawnFoodItem(foodId[i], foodX[i], foodY[i], foodRadius[i]);
+        }
+    }
+
+    public void SpawnFoodItem(int foodId, double x, double y, double radius)
+    {
+        FoodParticleController newFoodItem = Instantiate(foodPrefab);
+        newFoodItem.Id = foodId;
+
+        newFoodItem.transform.position = new Vector2((float)x, (float)y);
         newFoodItem.transform.SetParent(foodParent.transform);
-        newFoodItem.transform.localScale = new Vector3(radius, radius, radius);
+        newFoodItem.transform.localScale = new Vector3((float)radius, (float)radius, (float)radius);
+
         newFoodItem.GetComponent<SpriteRenderer>().color = colors[Random.Range(0, colors.Length)];
     }
 
-    //rewrite using sorted ID instead of comparing positions
-    public void RemoveOneFoodItem(float x, float y)
+    public void RemoveFood(List<int> foodId)
+    {
+        for (int i = 0; i < foodId.Count; i++)
+        {
+            RemoveFoodItem(foodId[i]);
+        }
+    }
+
+    public void RemoveFoodItem(int foodId)
     {
         for(int i = 0; i < existedFood.Count; i++)
         {
-            if (existedFood[i].transform.position.x == x && existedFood[i].transform.position.y == y)
+            if (existedFood[i].Id == foodId)
             {
                 Destroy(existedFood[i]);
                 existedFood.RemoveAt(i);
             }
         }
-    }
-
-    //List<> food
-    public void SpawnFood()
-    {
-
-    }
-
-    //List<> food
-    public void RemoveFood()
-    {
-
     }
 }

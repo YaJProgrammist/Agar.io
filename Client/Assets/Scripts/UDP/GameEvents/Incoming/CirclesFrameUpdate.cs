@@ -57,6 +57,6 @@ public class CirclesFrameUpdate : IncomingGameEvent
 
     public override void Handle()
     {
-            
+        PlayerManager.Instance.UpdateCircles(playerId, circleId, circleX, circleY, circleRadius);
     }
 }

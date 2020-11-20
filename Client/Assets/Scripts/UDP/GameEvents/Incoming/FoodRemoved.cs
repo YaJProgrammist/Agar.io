@@ -25,6 +25,6 @@ public class FoodRemoved : IncomingGameEvent
 
     public override void Handle()
     {
-
+        FoodManager.Instance.RemoveFood(foodId);
     }
 }

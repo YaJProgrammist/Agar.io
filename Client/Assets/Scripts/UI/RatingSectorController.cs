@@ -4,14 +4,14 @@ using UnityEngine.UI;
 public class RatingSectorController : MonoBehaviour
 {
     [SerializeField]
-    Text playerName;
+    Text playerId;
 
     [SerializeField]
     Text score;
 
-    public void UpdateValues(string name, int newScore)
+    public void UpdateValues(int id, double newScore)
     {
-        playerName.text = name;
+        playerId.text = id.ToString();
         score.text = newScore.ToString();
     }
 }
