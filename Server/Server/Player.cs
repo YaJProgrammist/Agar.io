@@ -1,12 +1,13 @@
 ﻿using System;
-using Server.Events;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 
 namespace Server
 {
     public class Player : IComparable<Player>
     {
+        private const int SPLIT_TIMER_TIME_MS = 40000;
         private double velocityX;
         private double velocityY;
 
@@ -51,6 +52,9 @@ namespace Server
                     newCircles.Add(new Circle(circle.Position, circle.Radius, true));
                 }
             }
+
+            Thread splitTimer = new Thread(StartSplitTimer);
+            splitTimer.Start(newCircles);
 
             OnPlayerCirclesAdded?.Invoke(this, new PlayerCirclesAddedEventArgs(newCircles, this.Id));
             
@@ -116,6 +120,24 @@ namespace Server
                 if (this.PlayerCircles[i].CanEatOtherObject(food))
                 {
                     currentEatPairs.Add(this.PlayerCircles[i], food);
+                }
+            }
+        }
+
+        private void StartSplitTimer(object newCirclesObj)
+        {
+            if (newCirclesObj is List<Circle> newCircles)
+            {
+                Thread.Sleep(SPLIT_TIMER_TIME_MS);
+
+                if (PlayerCircles.Count == 0)
+                {
+                    return;
+                }
+
+                foreach (Circle circle in newCircles)
+                {
+                    PlayerCircles[0].EatObject(circle);
                 }
             }
         }
