@@ -19,7 +19,7 @@ namespace Server.Events
 
         public override void Handle()
         {
-            Room.GetInstance().Players.Find(player => player.Id == playerId).Split();
+            Room.GetInstance().SplitPlayer(playerId);
         }
     }
 }

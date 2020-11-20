@@ -23,7 +23,7 @@ namespace Server.Events
 
         public override void Handle()
         {
-            Room.GetInstance().Players.Find(player => player.Id == playerId).SetVelocity(velocityX, velocityY);
+            Room.GetInstance().SetPlayerVelocity(playerId, velocityX, velocityY);
         }
     }
 }

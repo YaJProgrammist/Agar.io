@@ -8,7 +8,9 @@ namespace Server
     {
         static void Main(string[] args)
         {
-            Room.GetInstance().StartGame();
+            Room room = new Room();
+            RoomEventsSender roomEventsSender = new RoomEventsSender(room);
+            room.StartGame();
         }
     }
 }

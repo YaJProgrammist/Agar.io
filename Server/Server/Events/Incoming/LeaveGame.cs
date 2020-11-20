@@ -19,7 +19,8 @@ namespace Server.Events
 
         public override void Handle()
         {
-            // TODO player leaves
+            Room.GetInstance().RemovePlayer(playerId);
+            UDPServer.GetInstance().RemovePlayerClient(playerId);
         }
     }
 }

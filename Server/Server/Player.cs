@@ -19,6 +19,9 @@ namespace Server
         public double TopY { get; private set; }
         public double BottomY { get; private set; }
 
+        public event EventHandler<PlayerDiedEventArgs> OnPlayerDied;
+        public event EventHandler<PlayerCirclesAddedEventArgs> OnPlayerCirclesAdded;
+
         public Player(int playerId)
         {
             Id = playerId;
@@ -31,6 +34,8 @@ namespace Server
             Score = 0;
             PlayerCircles.Clear();
             PlayerCircles.Add(new Circle(firstCirclePoint));
+            PlayerCircles[0].OnCircleEaten += OnCircleEaten;
+            PlayerCircles[0].OnCircleAte += OnCircleAte;
         }
 
         public void Split()
@@ -47,8 +52,8 @@ namespace Server
                 }
             }
 
-            EventsSender.RegisterEvent(new CirclesAdded(newCircles, this.Id));
-
+            OnPlayerCirclesAdded?.Invoke(this, new PlayerCirclesAddedEventArgs(newCircles, this.Id));
+            
             PlayerCircles.AddRange(newCircles);
         }
 
@@ -74,7 +79,23 @@ namespace Server
             //UpdateBorderlineCoordinates();
         }
 
-        public void TryEatPlayer(Player other, ref Dictionary<Circle, EatableObject> currentEatPairs)
+        public void Move(double leftBorder, double rightBorder, double topBorder, double bottomBorder)
+        {
+            foreach (Circle circle in PlayerCircles)
+            {
+                if (circle.IsRemoved)
+                {
+                    Score -= circle.Radius;
+                    continue;
+                }
+
+                circle.Move(velocityX, velocityY, leftBorder, rightBorder, topBorder, bottomBorder);
+            }
+
+            //UpdateBorderlineCoordinates();
+        }
+
+        public void CalculateCirclesEatPairs(Player other, ref Dictionary<Circle, EatableObject> currentEatPairs)
         {
             for (int i = 0; i < this.PlayerCircles.Count; i++)
             {
@@ -112,6 +133,19 @@ namespace Server
         private double GetCameraHeight()
         {
             return Math.Max(RightX - LeftX, TopY - BottomY);
+        }
+
+        private void OnCircleEaten(object sender, CircleEatenEventArgs eventArgs)
+        {
+            Score -= Math.Pow(eventArgs.Eaten.Radius, 2);
+            if (PlayerCircles.Count == 0)
+            {
+                OnPlayerDied?.Invoke(this, new PlayerDiedEventArgs(this));
+            }
+        }
+        private void OnCircleAte(object sender, CircleAteEventArgs eventArgs)
+        {
+            Score += Math.Pow(eventArgs.Eater.Radius, 2);
         }
 
         public int CompareTo([AllowNull] Player other)
