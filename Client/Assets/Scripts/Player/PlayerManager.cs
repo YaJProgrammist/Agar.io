@@ -101,26 +101,33 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-    public void RemoveCircles(List<int> playerId, List<int> circleId)
+    public void RemoveCircles(List<int> circleId)
     {
-        for (int i = 0; i < playerId.Count; i++)
+        for (int i = 0; i < circleId.Count; i++)
         {
-            RemoveCircle(circleId[i], (playerId[i] == currentPlayerId));
+            RemoveCircle(circleId[i]);
         }
 
     }
 
-    public void RemoveCircle(int circleId, bool belongsToCurrentPlayer)
+    public void RemoveCircle(int circleId)
     {
-        List<CircleController> searchList =
-            (belongsToCurrentPlayer) ? currentPlayerCircles : otherPlayersCircles;
+        int maxListLength = Mathf.Max(currentPlayerCircles.Count, otherPlayersCircles.Count);
 
-        for (int i = 0; i < searchList.Count; i++)
+        for (int i = 0; i < maxListLength; i++)
         {
-            if (searchList[i].Id == circleId)
+            //to do refactor
+
+            if (currentPlayerCircles[i].Id == circleId)
             {
-                searchList[i].KillCircle();
-                searchList.Remove(searchList[i]);
+                currentPlayerCircles[i].KillCircle();
+                currentPlayerCircles.Remove(currentPlayerCircles[i]);
+                i--;
+                return;
+            } else if (otherPlayersCircles[i].Id == circleId)
+            {
+                otherPlayersCircles[i].KillCircle();
+                otherPlayersCircles.Remove(otherPlayersCircles[i]);
                 i--;
                 return;
             }

@@ -3,6 +3,6 @@
     public static void RegisterEvent(OutgoingGameEvent gameEvent)
     {
         byte[] message = gameEvent.GetSerialized();
-        UDPClient.SendMessage(message, message.Length);
+        UDPClient.GetInstance().SendMessage(message, message.Length);
     }
 }
