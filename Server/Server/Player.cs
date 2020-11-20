@@ -35,7 +35,7 @@ namespace Server
 
         public void Split()
         {
-            double minSplitRadius = Circle.MIN_RADIUS * 2;
+            double minSplitRadius = Circle.MIN_RADIUS * 1.414;
             List<Circle> newCircles = new List<Circle>();
 
             foreach (Circle circle in PlayerCircles)

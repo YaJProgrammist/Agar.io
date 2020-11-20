@@ -4,6 +4,7 @@ using UnityEngine;
 public class CirclesRemoved : IncomingGameEvent
 {
     private List<int> circlesId;
+    private List<int> playersId;
 
     public CirclesRemoved(byte[] package)
     {
@@ -15,10 +16,19 @@ public class CirclesRemoved : IncomingGameEvent
 
         circlesId = new List<int>();
 
-        int i = 1;
-        while (i < package.Length)
+        int circlesCount = Deserializer.DeserializeInt(package, 1);
+
+        int i = 5;
+
+        for (int j = 0; j < circlesCount; j++)
         {
             circlesId.Add(Deserializer.DeserializeInt(package, i));
+            i += 4;
+        }
+
+        while (i < package.Length)
+        {
+            playersId.Add(Deserializer.DeserializeInt(package, i));
             i += 4;
         }
     }

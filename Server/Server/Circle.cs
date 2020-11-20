@@ -6,19 +6,34 @@ namespace Server
     public class Circle : EatableObject
     {
         public const double MIN_RADIUS = 0.02;
+        public const double NORMAL_SPEED_COEFF = 1;
+        public const double ACCELERATED_SPEED_COEFF = 2;
         private List<Circle> childCircles;
+        private double speedCoeff;
         public int LeftCellX { get; private set; }
         public int RightCellX { get; private set; }
         public int TopCellY { get; private set; }
         public int BottomCellY { get; private set; }
 
         public bool IsRemoved { get; private set; }
+        public bool IsAccelerated { get; private set; }
 
-        public Circle(Point position, double radius = MIN_RADIUS) : base (position)
+        public Circle(Point position, double radius = MIN_RADIUS, bool isAccelerated = false) : base (position)
         {
             childCircles = new List<Circle>();
             Radius = radius;
             IsRemoved = false;
+
+            IsAccelerated = isAccelerated;
+
+            if (IsAccelerated)
+            {
+                speedCoeff = ACCELERATED_SPEED_COEFF;
+            }
+            else
+            {
+                speedCoeff = NORMAL_SPEED_COEFF;
+            }
 
             UpdateBorderlineCells();
         }

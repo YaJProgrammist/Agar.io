@@ -7,9 +7,10 @@ namespace Server.Events
         public List<Circle> NewCircles { get; set; }
         public int PlayerId { get; set; }
 
-        public CirclesAdded(List<Circle> circles)
+        public CirclesAdded(List<Circle> circles, int playerId)
         {
             NewCircles = circles;
+            PlayerId = playerId;
         }
 
         public override byte[] GetSerialized()
