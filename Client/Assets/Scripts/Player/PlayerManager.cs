@@ -18,9 +18,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField]
     CircleController circlePrefab;
 
-    public SortedSet<CircleController> currentPlayerCircles;
+    public List<CircleController> currentPlayerCircles;
 
-    private SortedSet<CircleController> otherPlayersCircles;
+    private List<CircleController> otherPlayersCircles;
 
     private void CreateSingleton()
     {
@@ -38,8 +38,8 @@ public class PlayerManager : MonoBehaviour
 
     private void InitializeManager()
     {
-        currentPlayerCircles = new SortedSet<CircleController>();
-        otherPlayersCircles = new SortedSet<CircleController>();
+        currentPlayerCircles = new List<CircleController>();
+        otherPlayersCircles = new List<CircleController>();
     }
 
     private void Awake()
@@ -62,14 +62,14 @@ public class PlayerManager : MonoBehaviour
 
     public void UpdateCircleValues(int circleId, double circleX, double circleY, double circleRadius, bool belongsToCurrentPlayer)
     {
-        SortedSet<CircleController> searchList =
+        List<CircleController> searchList =
             (belongsToCurrentPlayer) ? currentPlayerCircles : otherPlayersCircles;
 
-        foreach (CircleController circle in searchList)
+        for (int i = 0; i < searchList.Count; i++)
         {
-            if (circle.Id == circleId)
+            if (searchList[i].Id == circleId)
             {
-                circle.CircleFrameUpdate((float)circleX, (float)circleY, (float)circleRadius);
+                searchList[i].CircleFrameUpdate((float)circleX, (float)circleY, (float)circleRadius);
                 return;
             }
         }
@@ -112,15 +112,16 @@ public class PlayerManager : MonoBehaviour
 
     public void RemoveCircle(int circleId, bool belongsToCurrentPlayer)
     {
-        SortedSet<CircleController> searchList =
+        List<CircleController> searchList =
             (belongsToCurrentPlayer) ? currentPlayerCircles : otherPlayersCircles;
 
-        foreach (CircleController circle in searchList)
+        for (int i = 0; i < searchList.Count; i++)
         {
-            if (circle.Id == circleId)
+            if (searchList[i].Id == circleId)
             {
-                searchList.Remove(circle);
-                circle.KillCircle();
+                searchList[i].KillCircle();
+                searchList.Remove(searchList[i]);
+                i--;
                 return;
             }
         }
@@ -128,22 +129,26 @@ public class PlayerManager : MonoBehaviour
 
     public void KillCurrentPlayer()
     {
-        foreach (CircleController circle in currentPlayerCircles)
+        for (int i = 0; i< currentPlayerCircles.Count ;i++)
         {
-            currentPlayerCircles.Remove(circle);
-            circle.KillCircle();
+            currentPlayerCircles[i].KillCircle();
         }
+
+        currentPlayerCircles = new List<CircleController>();
     }
 
     public void KillEveryone()
     {
         KillCurrentPlayer();
 
-        foreach (CircleController circle in otherPlayersCircles)
+        for (int i = 0; i < otherPlayersCircles.Count; i++)
         {
-            currentPlayerCircles.Remove(circle);
-            circle.KillCircle();
+            otherPlayersCircles[i].KillCircle();
         }
 
+        otherPlayersCircles = new List<CircleController>();
+
     }
+
+
 }

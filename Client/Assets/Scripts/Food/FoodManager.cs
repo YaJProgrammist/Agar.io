@@ -72,7 +72,9 @@ public class FoodManager : MonoBehaviour
             {
                 Destroy(existedFood[i]);
                 existedFood.RemoveAt(i);
+                i--;
             }
         }
     }
+
 }

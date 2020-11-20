@@ -4,18 +4,25 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Vector3 FindCenter()
+    private void FollowCenter()
     {
         Vector3 pos = Vector3.zero;
         foreach (CircleController circle in PlayerManager.Instance.currentPlayerCircles)
         {
             pos += circle.gameObject.transform.position;
         }
-        return pos / PlayerManager.Instance.currentPlayerCircles.Count;
+        transform.position = pos / PlayerManager.Instance.currentPlayerCircles.Count;
+    }
+
+    private void ChangeResolution()
+    {
+
     }
 
     private void FixedUpdate()
     {
-        transform.position = FindCenter();
+        FollowCenter();
+        ChangeResolution();
+
     }
 }

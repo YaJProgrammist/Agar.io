@@ -216,6 +216,7 @@ MonoBehaviour:
   otherPlayersContainer: {fileID: 67639908}
   circlePrefab: {fileID: 3160773136181726473, guid: 423dae85affc045a6a2268a904af44ac,
     type: 3}
+  currentPlayerCircles: []
 --- !u!4 &77078599
 Transform:
   m_ObjectHideFlags: 0
@@ -2159,7 +2160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9422c07f162d247cab3091e348ae4544, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foodPrefab: {fileID: 0}
+  foodPrefab: {fileID: 8231130312584285802, guid: bf717eb3999fe4e07b66b8e8317f5058,
+    type: 3}
   foodParent: {fileID: 1619113910}
   colors:
   - {r: 1, g: 0.36320752, b: 0.36320752, a: 0}
