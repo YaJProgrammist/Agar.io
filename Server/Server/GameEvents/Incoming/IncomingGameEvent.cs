@@ -2,6 +2,6 @@
 {
     public abstract class IncomingGameEvent
     {
-        public abstract void Handle();
+        public abstract void Handle(Room room);
     }
 }

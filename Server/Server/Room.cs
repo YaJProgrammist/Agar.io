@@ -1,4 +1,5 @@
 ﻿using Server.Events;
+using Server.Events.Incoming;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -34,6 +35,8 @@ namespace Server
             rand = new Random();
             food = new List<Food>();
             playersWaitingForNextRound = new List<Player>();
+
+            IncomingPackagesManager.OnPackageIncame += (s, ea) => ea.GameEvent.Handle(this);
         }
 
         public void StartGame()

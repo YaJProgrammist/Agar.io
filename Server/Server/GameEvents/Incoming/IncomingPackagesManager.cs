@@ -4,6 +4,8 @@ namespace Server.Events.Incoming
 {
     public static class IncomingPackagesManager
     {
+        public static event EventHandler<OnPackageIncameEventArgs> OnPackageIncame;
+
         public static void HandlePackage(byte[] package, int playerId = -1)
         {
             try
@@ -29,7 +31,7 @@ namespace Server.Events.Incoming
                         break;
                 }
 
-                gameEvent.Handle();
+                OnPackageIncame?.Invoke(null, new OnPackageIncameEventArgs(gameEvent));
             }
             catch (Exception e)
             {
