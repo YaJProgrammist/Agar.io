@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Server
 {
@@ -8,6 +9,7 @@ namespace Server
         public const double MIN_RADIUS = 0.02;
         public const double NORMAL_SPEED_COEFF = 1;
         public const double ACCELERATED_SPEED_COEFF = 2;
+        public const int ACCELERATION_TIME_MS = 1000;
         private List<Circle> childCircles;
         private double speedCoeff;
         public int LeftCellX { get; private set; }
@@ -29,6 +31,8 @@ namespace Server
             if (IsAccelerated)
             {
                 speedCoeff = ACCELERATED_SPEED_COEFF;
+                Thread accelerationTimerThread = new Thread(StartAccelerationTimer);
+                accelerationTimerThread.Start();
             }
             else
             {
@@ -40,7 +44,7 @@ namespace Server
 
         public void Move(double velocityX, double velocityY)
         {
-            double speed = 1 / Radius;
+            double speed = speedCoeff / Radius;
             Position = new Point(Position.X + velocityX * speed, Position.Y + velocityY * speed);
 
             UpdateBorderlineCells();
@@ -80,6 +84,13 @@ namespace Server
             this.Radius = Math.Sqrt(Math.Pow(this.Radius, 2) + Math.Pow(other.Radius, 2));
 
             other.Remove();
+        }
+
+        private void StartAccelerationTimer()
+        {
+            Thread.Sleep(ACCELERATION_TIME_MS);
+            speedCoeff = NORMAL_SPEED_COEFF;
+            IsAccelerated = false;
         }
 
         private void UpdateBorderlineCells()

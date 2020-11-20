@@ -17,12 +17,12 @@ namespace Server.Events
 
             serialized.Add((byte)OutgoingGameEventTypes.FoodAdded);
 
-            foreach (EatableObject eatableObject in NewFood)
+            foreach (Food food in NewFood)
             {
-                serialized.AddRange(Serializer.SerializeInt(eatableObject.Id));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.X));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Position.Y));
-                serialized.AddRange(Serializer.SerializeDouble(eatableObject.Radius));
+                serialized.AddRange(Serializer.SerializeInt(food.Id));
+                serialized.AddRange(Serializer.SerializeDouble(food.Position.X));
+                serialized.AddRange(Serializer.SerializeDouble(food.Position.Y));
+                serialized.AddRange(Serializer.SerializeDouble(food.Radius));
             }
 
             return serialized.ToArray();

@@ -43,7 +43,7 @@ namespace Server
                 if (circle.Radius >= minSplitRadius)
                 {
                     circle.Radius /= 2;
-                    newCircles.Add(new Circle(circle.Position, circle.Radius));
+                    newCircles.Add(new Circle(circle.Position, circle.Radius, true));
                 }
             }
 
