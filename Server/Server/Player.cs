@@ -109,6 +109,17 @@ namespace Server
             }
         }
 
+        public void CalculateCirclesEatPairs(Food food, ref Dictionary<Circle, EatableObject> currentEatPairs)
+        {
+            for (int i = 0; i < this.PlayerCircles.Count; i++)
+            {
+                if (this.PlayerCircles[i].CanEatOtherObject(food))
+                {
+                    currentEatPairs.Add(this.PlayerCircles[i], food);
+                }
+            }
+        }
+
         private void UpdateBorderlineCoordinates()
         {
             double leftX = 0;

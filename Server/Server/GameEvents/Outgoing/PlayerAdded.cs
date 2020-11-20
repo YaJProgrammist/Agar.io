@@ -7,7 +7,7 @@ namespace Server.Events
     {
         public int PlayerId { get; set; }
 
-        public PlayerAdded(int playerId, int firstCircleX, int firstCircleY)
+        public PlayerAdded(int playerId)
         {
             PlayerId = playerId;
         }
