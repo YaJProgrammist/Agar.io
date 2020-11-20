@@ -6,8 +6,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public string Name;
 
-    public bool RoundIsRunning = false;
-    public bool PlayerIsDead = false;
+    public bool RoundIsRunning;
+    public bool PlayerIsDead;
 
     private void CreateSingleton()
     {
@@ -36,7 +36,10 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        EventsSender.RegisterEvent(new ConnectionToServer());
+        RoundIsRunning = false;
+        PlayerIsDead = false;
+
+    EventsSender.RegisterEvent(new ConnectionToServer());
         StartGame();
     }
 

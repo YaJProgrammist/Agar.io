@@ -70,7 +70,7 @@ public class FoodManager : MonoBehaviour
         {
             if (existedFood[i].Id == foodId)
             {
-                Destroy(existedFood[i]);
+                existedFood[i].SwallowFoodParticle();
                 existedFood.RemoveAt(i);
                 i--;
             }
