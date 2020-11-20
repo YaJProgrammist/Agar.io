@@ -17,9 +17,10 @@ namespace Server.Events
             playerId = Deserializer.DeserializeInt(package, 1);
         }
 
-        public override void Handle()
+        public override void Handle(Room room)
         {
-            // TODO player leaves
+            room.RemovePlayer(playerId);
+            UDPServer.GetInstance().RemovePlayerClient(playerId);
         }
     }
 }

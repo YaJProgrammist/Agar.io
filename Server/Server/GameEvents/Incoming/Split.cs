@@ -17,9 +17,9 @@ namespace Server.Events
             playerId = Deserializer.DeserializeInt(package, 1);
         }
 
-        public override void Handle()
+        public override void Handle(Room room)
         {
-            Room.GetInstance().Players.Find(player => player.Id == playerId).Split();
+            room.SplitPlayer(playerId);
         }
     }
 }

@@ -15,6 +15,11 @@ namespace Server
         private Dictionary<int, Address> playerAddresses;
         private UdpClient server;
 
+        static UDPServer()
+        {
+            GetInstance();
+        }
+
         private UDPServer()
         {
             playerAddresses = new Dictionary<int, Address>();
@@ -92,8 +97,8 @@ namespace Server
         {
             while(true)
             {
-                var result = await server.ReceiveAsync();
-                byte[] package = result.Buffer;
+                var result = server.ReceiveAsync();
+                byte[] package = result.Result.Buffer;
                 IncomingPackagesManager.HandlePackage(package);
                 Console.WriteLine("here");
             }

@@ -20,6 +20,9 @@ namespace Server
         public bool IsRemoved { get; private set; }
         public bool IsAccelerated { get; private set; }
 
+        public event EventHandler<CircleEatenEventArgs> OnCircleEaten;
+        public event EventHandler<CircleAteEventArgs> OnCircleAte;
+
         public Circle(Point position, double radius = MIN_RADIUS, bool isAccelerated = false) : base (position)
         {
             childCircles = new List<Circle>();
@@ -45,7 +48,19 @@ namespace Server
         public void Move(double velocityX, double velocityY)
         {
             double speed = speedCoeff / Radius;
+
             Position = new Point(Position.X + velocityX * speed, Position.Y + velocityY * speed);
+
+            UpdateBorderlineCells();
+        }
+
+        public void Move(double velocityX, double velocityY, double leftBorder, double rightBorder, double topBorder, double bottomBorder)
+        {
+            double speed = speedCoeff / Radius;
+
+            double newPositionX = Math.Max(Math.Min(Position.X + velocityX * speed, rightBorder), leftBorder);
+            double newPositionY = Math.Max(Math.Min(Position.Y + velocityY * speed, topBorder), bottomBorder);
+            Position = new Point(newPositionX, newPositionY);
 
             UpdateBorderlineCells();
         }

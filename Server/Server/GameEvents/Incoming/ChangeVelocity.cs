@@ -21,9 +21,9 @@ namespace Server.Events
             velocityY = Deserializer.DeserializeInt(package, 9);
         }
 
-        public override void Handle()
+        public override void Handle(Room room)
         {
-            Room.GetInstance().Players.Find(player => player.Id == playerId).SetVelocity(velocityX, velocityY);
+            room.SetPlayerVelocity(playerId, velocityX, velocityY);
         }
     }
 }

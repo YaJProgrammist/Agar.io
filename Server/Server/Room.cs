@@ -1,4 +1,5 @@
 ﻿using Server.Events;
+using Server.Events.Incoming;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -13,11 +14,10 @@ namespace Server
         public const int WAITING_TIME_BEFORE_ROUND_MS = 10000;
         private const int FOOD_AMOUNT_PER_UPDATE = 100;
         private const int FOOD_AMOUNT_ON_START = 1000;
+        private const double WIN_SCORE = 200;
 
-        private static Room instance = null;
-        private static readonly object lockObj = new object();
         private List<Cell> cells;
-        public List<Player> Players { get; private set; }
+        private List<Player> players;
         private List<Player> playersWaitingForNextRound;
         private List<Food> food;
         private Thread gameRunningThread;
@@ -25,7 +25,9 @@ namespace Server
 
         public bool IsGameRunning { get; private set; }
 
-        private Room()
+        public event EventHandler<GameEventOccuredEventArgs> OnGameEventOccured;
+
+        public Room()
         {
             cells = new List<Cell>();
             players = new List<Player>();
@@ -33,19 +35,8 @@ namespace Server
             rand = new Random();
             food = new List<Food>();
             playersWaitingForNextRound = new List<Player>();
-        }
 
-        public static Room GetInstance()
-        {
-            lock (lockObj)
-            {
-                if (instance == null)
-                {
-                    instance = new Room();
-                }
-
-                return instance;
-            }
+            IncomingPackagesManager.OnPackageIncame += (s, ea) => ea.GameEvent.Handle(this);
         }
 
         public void StartGame()
@@ -67,7 +58,38 @@ namespace Server
             playersWaitingForNextRound.Add(player);
         }
 
-        private void GeneratePlayersFirstCircles()
+        public void RemovePlayer(int playerId)
+        {
+            Player player = players.Find(player => player.Id == playerId);
+            players.Remove(player);
+        }
+
+        public void SplitPlayer(int playerId)
+        {
+            players.Find(player => player.Id == playerId).Split();
+        }
+
+        public void SetPlayerVelocity(int playerId, double velocityX, double velocityY)
+        {
+            players.Find(player => player.Id == playerId).SetVelocity(velocityX, velocityY);
+        }
+
+        private void OnPlayerDied(object sender, PlayerDiedEventArgs eventArgs)
+        {
+            playersWaitingForNextRound.Add(eventArgs.DeadPlayer);
+            players.Remove(eventArgs.DeadPlayer);
+
+            PlayerDied playerDiedGameEvent = new PlayerDied(eventArgs.DeadPlayer.Id);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(playerDiedGameEvent, eventArgs.DeadPlayer.Id));
+        }
+
+        private void OnPlayerCirclesAdded(object sender, PlayerCirclesAddedEventArgs eventArgs)
+        {
+            CirclesAdded circlesAddedGameEvent = new CirclesAdded(eventArgs.NewCircles, eventArgs.PlayerId);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesAddedGameEvent));
+        }
+
+        private void GenerateplayersFirstCircles()
         {
             Random rand = new Random();
 
@@ -107,7 +129,8 @@ namespace Server
                 players[i].StartNewGame(playerPosition);
             }
 
-            EventsSender.RegisterEvent(new RoundStarted(players));
+            RoundStarted roundStartedGameEvent = new RoundStarted(players);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
         }
 
         private Point GetRandomPointInRoom()
@@ -140,8 +163,19 @@ namespace Server
             playersWaitingForNextRound.Clear();
             food.Clear();
 
-            GeneratePlayersFirstCircles();
+            foreach(Player player in players)
+            {
+                SubscripeOnPlayerEvents(player);
+            }
+
+            GenerateplayersFirstCircles();
             GenerateFood(FOOD_AMOUNT_ON_START);
+        }
+
+        private void SubscripeOnPlayerEvents(Player player)
+        {
+            player.OnPlayerDied += OnPlayerDied;
+            player.OnPlayerCirclesAdded += OnPlayerCirclesAdded;
         }
 
         private void Update()
@@ -157,6 +191,12 @@ namespace Server
 
             UpdatePositions();
             UpdateEatenObjects();
+
+            players.Sort();
+
+            CirclesFrameUpdate positionsUpdatedGameEvent = new CirclesFrameUpdate(players);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(positionsUpdatedGameEvent));
+
             GenerateFood(FOOD_AMOUNT_PER_UPDATE);
 
             if (IsRoundOver())
@@ -185,18 +225,16 @@ namespace Server
 
             food.AddRange(newFood);
 
-            EventsSender.RegisterEvent(new FoodAdded(newFood));
+            FoodAdded foodAddedGameEvent = new FoodAdded(newFood);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(foodAddedGameEvent));
         }
 
         private void UpdatePositions()
         {
             foreach (Player player in players)
             {
-                player.Move();
+                player.Move(0, WIDTH, HEIGHT, 0);
             }
-
-            CirclesFrameUpdate positionsUpdatedEvent = new CirclesFrameUpdate(players);
-            EventsSender.RegisterEvent(positionsUpdatedEvent);
         }
 
         private void UpdateEatenObjects()
@@ -207,8 +245,8 @@ namespace Server
             {
                 for (int playerInd2 = playerInd1 + 1; playerInd2 < players.Count; playerInd2++)
                 {
-                    players[playerInd1].TryEatPlayer(players[playerInd2], ref eatPairs);
-                    players[playerInd2].TryEatPlayer(players[playerInd1], ref eatPairs);
+                    players[playerInd1].CalculateCirclesEatPairs(players[playerInd2], ref eatPairs);
+                    players[playerInd2].CalculateCirclesEatPairs(players[playerInd1], ref eatPairs);
                 }
             }
 
@@ -216,16 +254,16 @@ namespace Server
             {
                 pair.Key.EatObject(pair.Value);
             }
-
-            players.Sort();
-
-            CirclesFrameUpdate positionsUpdatedEvent = new CirclesFrameUpdate(players);
-            EventsSender.RegisterEvent(positionsUpdatedEvent);
         }
 
         private bool IsRoundOver()
         {
-            return players.Count <= 1; //TODO Radius == half of cell width or height
+            if (players.Count == 0 || players[0].Score >= WIN_SCORE)
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }
