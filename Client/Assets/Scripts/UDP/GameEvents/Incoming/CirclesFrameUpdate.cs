@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class CirclesFrameUpdate : IncomingGameEvent
 {
-    private List<int> circleId;
-    private List<double> circleX;
-    private List<double> circleY;
-    private List<double> circleRadius;
+    private List<int> playerId;
+    private List<List<int>> circleId;
+    private List<List<double>> circleX;
+    private List<List<double>> circleY;
+    private List<List<double>> circleRadius;
 
     public CirclesFrameUpdate(byte[] package)
     {
@@ -16,25 +17,41 @@ public class CirclesFrameUpdate : IncomingGameEvent
             return;
         }
 
-        circleId = new List<int>();
-        circleX = new List<double>();
-        circleY = new List<double>();
-        circleRadius = new List<double>();
+        playerId = new List<int>();
+        circleId = new List<List<int>>();
+        circleX = new List<List<double>>();
+        circleY = new List<List<double>>();
+        circleRadius = new List<List<double>>();
 
         int i = 1;
+        int currentPlayerNum = 0;
         while (i < package.Length)
         {
-            circleId.Add(Deserializer.DeserializeInt(package, i));
+            playerId.Add(Deserializer.DeserializeInt(package, i));
             i += 4;
 
-            circleX.Add(Deserializer.DeserializeDouble(package, i));
+            int circlesCount = Deserializer.DeserializeInt(package, i);
             i += 4;
 
-            circleY.Add(Deserializer.DeserializeDouble(package, i));
-            i += 4;
+            circleId[currentPlayerNum] = new List<int>();
+            circleX[currentPlayerNum] = new List<double>();
+            circleY[currentPlayerNum] = new List<double>();
+            circleRadius[currentPlayerNum] = new List<double>();
 
-            circleRadius.Add(Deserializer.DeserializeDouble(package, i));
-            i += 4;
+            for (int j = 0; j < circlesCount; j++)
+            {
+                circleId[currentPlayerNum].Add(Deserializer.DeserializeInt(package, i));
+                i += 4;
+
+                circleX[currentPlayerNum].Add(Deserializer.DeserializeDouble(package, i));
+                i += 4;
+
+                circleY[currentPlayerNum].Add(Deserializer.DeserializeDouble(package, i));
+                i += 4;
+
+                circleRadius[currentPlayerNum].Add(Deserializer.DeserializeDouble(package, i));
+                i += 4;
+            }
         }
     }
 

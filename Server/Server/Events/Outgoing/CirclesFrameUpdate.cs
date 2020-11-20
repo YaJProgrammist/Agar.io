@@ -4,11 +4,11 @@ namespace Server.Events
 {
     public class CirclesFrameUpdate : OutgoingGameEvent
     {
-        public List<Circle> Circles { get; set; }
+        public List<Player> Players { get; set; }
 
-        public CirclesFrameUpdate(List<Circle> circles)
+        public CirclesFrameUpdate(List<Player> players)
         {
-            Circles = circles;
+            Players = players;
         }
 
         public override byte[] GetSerialized()
@@ -17,12 +17,18 @@ namespace Server.Events
 
             serialized.Add((byte)OutgoingGameEventTypes.CirclesFrameUpdate);
 
-            foreach (Circle circle in Circles)
+            foreach (Player player in Players)
             {
-                serialized.AddRange(Serializer.SerializeInt(circle.Id));
-                serialized.AddRange(Serializer.SerializeDouble(circle.Position.X));
-                serialized.AddRange(Serializer.SerializeDouble(circle.Position.Y));
-                serialized.AddRange(Serializer.SerializeDouble(circle.Radius));
+                serialized.AddRange(Serializer.SerializeInt(player.Id));
+                serialized.AddRange(Serializer.SerializeInt(player.PlayerCircles.Count));
+
+                foreach (Circle circle in player.PlayerCircles)
+                {
+                    serialized.AddRange(Serializer.SerializeInt(circle.Id));
+                    serialized.AddRange(Serializer.SerializeDouble(circle.Position.X));
+                    serialized.AddRange(Serializer.SerializeDouble(circle.Position.Y));
+                    serialized.AddRange(Serializer.SerializeDouble(circle.Radius));
+                }
             }
 
             return serialized.ToArray();
