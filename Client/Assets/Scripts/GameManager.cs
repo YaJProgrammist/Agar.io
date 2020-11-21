@@ -88,7 +88,8 @@ public class GameManager : MonoBehaviour
     //put next methods into server connection class
     public void SendDirection()
     {
-        Vector2 direction = new Vector2(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2).normalized;
+        var mousePos = Input.mousePosition;
+        Vector2 direction = new Vector2(mousePos.x - Screen.width / 2, mousePos.y - Screen.height / 2).normalized;
         //send on server current player direction
 
         EventsSender.RegisterEvent(new ChangeVelocity(PlayerManager.Instance.currentPlayerId, (double)direction.x, (double)direction.y));

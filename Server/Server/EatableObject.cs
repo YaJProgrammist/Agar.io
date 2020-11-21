@@ -10,6 +10,7 @@ namespace Server
 
         public EatableObject(Point position)
         {
+            Id = IdGenerator.GetInstance().GetId();
             Position = position;
         }
 

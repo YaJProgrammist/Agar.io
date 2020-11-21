@@ -38,7 +38,6 @@ public class UDPClient
     {
         try
         {
-            Debug.LogWarning("send direction");
             client.Send(message, messageLength);
         }
         catch (SocketException e)
@@ -49,8 +48,6 @@ public class UDPClient
         {
             Debug.LogError(String.Format("Exception: {0}", e.Message));
         }
-
-        client.Close();
     }
 
     private void ListenToAll()

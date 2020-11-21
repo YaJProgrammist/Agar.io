@@ -50,8 +50,7 @@ public class PlayerManager : MonoBehaviour
 
     public void UpdateCircles(List<int> playerId, List<List<int>> circleId, List<List<double>> circleX, List<List<double>> circleY, List<List<double>> circleRadius)
     {
-        
-        for (int i = 0; i < circleId.Count; i++)
+        for (int i = 0; i < playerId.Count; i++)
         {
             for (int j = 0; j < circleId[i].Count; j++)
             {

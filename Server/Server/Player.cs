@@ -28,6 +28,8 @@ namespace Server
             Id = playerId;
             PlayerCircles = new List<Circle>();
             IsPresent = true;
+            velocityX = 0;
+            velocityY = 0;
         }
 
         public void StartNewGame(Point firstCirclePoint)
@@ -63,6 +65,7 @@ namespace Server
 
         public void SetVelocity(double newVelocityX, double newVelocityY)
         {
+            Console.WriteLine("SET PLAYER VELOCITY {0} {1}", velocityX, velocityY);
             velocityX = newVelocityX;
             velocityY = newVelocityY;
         }
@@ -87,12 +90,6 @@ namespace Server
         {
             foreach (Circle circle in PlayerCircles)
             {
-                if (circle.IsRemoved)
-                {
-                    Score -= circle.Radius;
-                    continue;
-                }
-
                 circle.Move(velocityX, velocityY, leftBorder, rightBorder, topBorder, bottomBorder);
             }
 

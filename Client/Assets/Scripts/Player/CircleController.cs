@@ -19,14 +19,14 @@ public class CircleController : MonoBehaviour
 
     public void CircleFrameUpdate(float newX, float newY, float newRadius)
     {
-        transform.position = new Vector3(newX, newY, 0);
-        transform.localScale = new Vector3(newRadius, newRadius, newRadius);
+        transform.position = new Vector2(newX, newY);
+        transform.localScale = new Vector2(newRadius, newRadius);
     }
 
     public void SetPlayerStartValues(int Id, float x, float y, float radius, Color color)
     {
-        transform.position = new Vector3(x, y, 0);
-        transform.localScale = new Vector3(radius, radius, radius);
+        transform.position = new Vector3(x, y);
+        transform.localScale = new Vector3(radius, radius);
         GetComponent<SpriteRenderer>().color = color;
       
     }

@@ -7,8 +7,8 @@ namespace Server
     public class Circle : EatableObject
     {
         public const double MIN_RADIUS = 0.2;
-        public const double NORMAL_SPEED_COEFF = 1;
-        public const double ACCELERATED_SPEED_COEFF = 2;
+        public const double NORMAL_SPEED_COEFF = 0.1;
+        public const double ACCELERATED_SPEED_COEFF = 0.2;
         public const int ACCELERATION_TIME_MS = 1000;
         private List<Circle> childCircles;
         private double speedCoeff;
@@ -56,6 +56,7 @@ namespace Server
 
         public void Move(double velocityX, double velocityY, double leftBorder, double rightBorder, double topBorder, double bottomBorder)
         {
+            Console.WriteLine("CIRCLE VELOCITY {0} {1}", velocityX, velocityY);
             double speed = speedCoeff / Radius;
 
             double newPositionX = Math.Max(Math.Min(Position.X + velocityX * speed, rightBorder), leftBorder);

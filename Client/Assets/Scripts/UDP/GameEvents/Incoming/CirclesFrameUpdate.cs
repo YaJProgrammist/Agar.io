@@ -11,6 +11,13 @@ public class CirclesFrameUpdate : IncomingGameEvent
 
     public CirclesFrameUpdate(byte[] package)
     {
+        string str = "";
+        for (int h = 0; h < package.Length; h++)
+        {
+            str += package[h].ToString() + " ";
+        }
+        Debug.Log(str);
+
         if (package[0] != (byte)IncomingGameEventTypes.CirclesFrameUpdate)
         {
             Debug.LogError("Incorrect package");
@@ -33,10 +40,10 @@ public class CirclesFrameUpdate : IncomingGameEvent
             int circlesCount = Deserializer.DeserializeInt(package, i);
             i += 4;
 
-            circleId[currentPlayerNum] = new List<int>();
-            circleX[currentPlayerNum] = new List<double>();
-            circleY[currentPlayerNum] = new List<double>();
-            circleRadius[currentPlayerNum] = new List<double>();
+            circleId.Add(new List<int>());
+            circleX.Add(new List<double>());
+            circleY.Add(new List<double>());
+            circleRadius.Add(new List<double>());
 
             for (int j = 0; j < circlesCount; j++)
             {

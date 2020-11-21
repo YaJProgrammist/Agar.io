@@ -18,8 +18,17 @@ public static class Serializer
 
         return seriaized;
     }
+
     public static List<byte> SerializeDouble(double initialValue)
     {
         return SerializeInt((int)Math.Round(initialValue * 100));
+    }
+
+    public static List<byte> SerializeNormalizedVectorCoord(double initialValue)
+    {
+        List<byte> seriaized = new List<byte>();
+        seriaized.Add((byte)Math.Round(initialValue * 100 + 100));
+
+        return seriaized;
     }
 }

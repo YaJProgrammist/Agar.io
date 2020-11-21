@@ -25,9 +25,15 @@ public static class Deserializer
 
         return (int)deseriaized;
     }
+
     public static double DeserializeDouble(byte[] initialArray, int startInd)
     {
         int deserializedInt = DeserializeInt(initialArray, startInd);
         return deserializedInt / 100.0;
+    }
+
+    public static double DeserializeNormalizedVectorCoord(byte[] initialArray, int startInd)
+    {
+        return (initialArray[startInd] - 100) / 100.0;
     }
 }

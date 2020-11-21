@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class ChangeVelocity : OutgoingGameEvent
 {
@@ -20,8 +21,8 @@ public class ChangeVelocity : OutgoingGameEvent
         serialized.Add((byte)OutgoingGameEventTypes.ChangeVelocity);
 
         serialized.AddRange(Serializer.SerializeInt(myPlayerId));
-        serialized.AddRange(Serializer.SerializeDouble(velocityX));
-        serialized.AddRange(Serializer.SerializeDouble(velocityY));
+        serialized.AddRange(Serializer.SerializeNormalizedVectorCoord(velocityX));
+        serialized.AddRange(Serializer.SerializeNormalizedVectorCoord(velocityY));
 
         return serialized.ToArray();
     }
