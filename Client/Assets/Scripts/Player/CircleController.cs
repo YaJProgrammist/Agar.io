@@ -19,7 +19,8 @@ public class CircleController : MonoBehaviour
 
     public void CircleFrameUpdate(float newX, float newY, float newRadius)
     {
-        transform.position = Vector2.Lerp(transform.position, new Vector2(newX, newY), 0.2f);
+        transform.position = new Vector2(newX, newY);
+        //transform.position = Vector2.Lerp(transform.position, new Vector2(newX, newY), 0.2f);
         transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(newRadius, newRadius), 0.2f);
     }
 

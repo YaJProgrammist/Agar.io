@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
@@ -75,6 +76,7 @@ public class GameManager : MonoBehaviour
 
         UIManager.Instance.CloseAllWindows();
 
+        //StartCoroutine(UpdatePlayerVelocity());
     }
 
     public void EndRound()
@@ -130,4 +132,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator UpdatePlayerVelocity()
+    {
+        while (RoundIsRunning && !PlayerIsDead)
+        {
+            yield return new WaitForSeconds(0.02f);
+            SendDirection();
+        }
+    }
 }

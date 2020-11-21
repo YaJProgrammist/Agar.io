@@ -11,9 +11,9 @@ namespace Server
     {
         public const double HEIGHT = 1000;
         public const double WIDTH = 1000;
-        public const int UPDATE_TIME_MS = 200;
+        public const int UPDATE_TIME_MS = 40;
         public const int WAITING_TIME_BEFORE_ROUND_MS = 10000;
-        private const int FOOD_AMOUNT_PER_UPDATE = 100;
+        private const int FOOD_AMOUNT_PER_UPDATE = 20;
         private const int FOOD_AMOUNT_ON_START = 1000;
         private const double WIN_SCORE = 200;
 
