@@ -49,6 +49,7 @@ public class FoodManager : MonoBehaviour
         FoodParticleController newFoodItem = Instantiate(foodPrefab);
         newFoodItem.Id = foodId;
 
+        newFoodItem.name = "food" + newFoodItem.Id;
         newFoodItem.transform.position = new Vector2((float)x, (float)y);
         newFoodItem.transform.SetParent(foodParent.transform);
         newFoodItem.transform.localScale = new Vector3((float)radius, (float)radius, (float)radius);
