@@ -83,11 +83,6 @@ public class UDPClient
         byte[] package = u.EndReceive(ar, ref e);
         messageReceived = true;
 
-        for (int i = 0; i < package.Length; i++)
-        {
-            Debug.Log(package[i]);
-        }
-
         IncomingPackagesManager.HandlePackage(package);
     }
 

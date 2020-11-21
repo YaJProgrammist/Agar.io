@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 
     public bool RoundIsRunning;
     public bool PlayerIsDead;
+    public Queue<IncomingGameEvent> GameEvents = new Queue<IncomingGameEvent>();
 
     private void CreateSingleton()
     {
@@ -20,6 +21,14 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    public void Update()
+    {
+        while (GameEvents.Count > 0)
+        {
+            GameEvents.Dequeue().Handle();
+        }
     }
 
     private void InitializeManager()

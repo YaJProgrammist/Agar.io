@@ -11,7 +11,7 @@
 
             while (i < 4 && startInd + i < initialArray.Length)
             {
-                deseriaized += initialArray[i] * factor;
+                deseriaized += initialArray[startInd + i] * factor;
 
                 i++;
 

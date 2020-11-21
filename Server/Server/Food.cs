@@ -4,7 +4,7 @@ namespace Server
 {
     public class Food : EatableObject
     {
-        private const double FOOD_RADIUS = 0.005;
+        private const double FOOD_RADIUS = 0.05;
 
         public event EventHandler<FoodEatenEventArgs> OnFoodEaten;
 

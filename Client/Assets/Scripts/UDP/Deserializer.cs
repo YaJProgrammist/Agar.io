@@ -1,4 +1,6 @@
-﻿public static class Deserializer
+﻿using UnityEngine;
+
+public static class Deserializer
 {
     public static int DeserializeInt(byte[] initialArray, int startInd)
     {
@@ -9,7 +11,7 @@
 
         while(i < 4 && startInd + i < initialArray.Length)
         {
-            deseriaized += initialArray[i] * factor;
+            deseriaized += initialArray[startInd + i] * factor;
 
             i++;
 

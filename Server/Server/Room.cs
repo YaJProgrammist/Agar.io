@@ -150,10 +150,6 @@ namespace Server
             while (true)
             {
                 Thread.Sleep(WAITING_TIME_BEFORE_ROUND_MS);
-
-                Console.WriteLine("Round started");
-                RoundStarted roundStartedGameEvent = new RoundStarted(players);
-                OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
                 RefreshRoom();
                 IsGameRunning = true;
 
@@ -177,6 +173,11 @@ namespace Server
             }
 
             GenerateplayersFirstCircles();
+
+            Console.WriteLine("Round started");
+            RoundStarted roundStartedGameEvent = new RoundStarted(players);
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
+
             GenerateFood(FOOD_AMOUNT_ON_START);
         }
 

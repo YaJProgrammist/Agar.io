@@ -48,7 +48,7 @@ public static class IncomingPackagesManager
                     break;
             }
 
-            gameEvent.Handle();
+            GameManager.Instance.GameEvents.Enqueue(gameEvent);
         }
         catch (Exception e)
         {
