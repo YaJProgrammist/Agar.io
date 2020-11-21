@@ -38,7 +38,7 @@ public class FoodManager : MonoBehaviour
 
     public void SpawnFood(List<int> foodId, List<double> foodX, List<double> foodY, List<double> foodRadius)
     {
-        for (int i = 0; i < existedFood.Count; i++)
+        for (int i = 0; i < foodId.Count; i++)
         {
             SpawnFoodItem(foodId[i], foodX[i], foodY[i], foodRadius[i]);
         }
