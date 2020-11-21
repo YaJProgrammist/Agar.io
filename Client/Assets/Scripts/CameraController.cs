@@ -11,26 +11,33 @@ public class CameraController : MonoBehaviour
     private Camera currentPlayerCamera;
 
     //added to avoid camera's long moving to player on the start of a round
-    private bool hasFoundObject = false;
+    private bool hasFoundObject;
 
-    private Vector2 zeroPoint = new Vector2(500, 500);
+    private Vector3 zeroPoint;
     private float zeroScale = 7.14f;
 
     public void ResetCameraView()
     {
         transform.position = zeroPoint;
         currentPlayerCamera.orthographicSize = zeroScale;
+
+        hasFoundObject = false;
     }
 
     private void FollowCenterAndChangeResolution()
     {
         if (PlayerManager.Instance.currentPlayerCircles.Count != 0)
         {
+            int numberOfCircles = PlayerManager.Instance.currentPlayerCircles.Count;
+
             // when round starts the camera need to move from zero point to the player's position
             if (!hasFoundObject)
             {
                 //as on start each player has only one circle move camera to our the only existed circle
-                transform.position = PlayerManager.Instance.currentPlayerCircles[0].transform.position;
+                transform.position = new Vector3(PlayerManager.Instance.currentPlayerCircles[0].transform.position.x,
+                    PlayerManager.Instance.currentPlayerCircles[0].transform.position.y,
+                    transform.position.z);
+
                 hasFoundObject = true;
 
             } 
@@ -45,10 +52,14 @@ public class CameraController : MonoBehaviour
                     circlesRadiusSum += circle.gameObject.transform.localScale.x;
                 }
                 // move with circles
-                transform.position = Vector3.Lerp(transform.position, pos / PlayerManager.Instance.currentPlayerCircles.Count, timeBetweenMoving);
+                transform.position = Vector3.Lerp(transform.position,
+                    new Vector3(pos.x / numberOfCircles, pos.y / numberOfCircles, pos.z),
+                    timeBetweenMoving);
 
                 // change resolution
-                currentPlayerCamera.orthographicSize = Mathf.Lerp(currentPlayerCamera.orthographicSize, circlesRadiusSum * resolutionCoefficient, timeBetweenMoving);
+                currentPlayerCamera.orthographicSize = Mathf.Lerp(currentPlayerCamera.orthographicSize,
+                    circlesRadiusSum * resolutionCoefficient,
+                    timeBetweenMoving);
         }
     }
 
@@ -60,5 +71,8 @@ public class CameraController : MonoBehaviour
     private void Awake()
     {
         currentPlayerCamera = GetComponent<Camera>();
+        zeroPoint = new Vector3(500, 500, transform.position.z);
+
+        ResetCameraView();
     }
 }
