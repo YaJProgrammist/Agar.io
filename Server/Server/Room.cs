@@ -9,8 +9,8 @@ namespace Server
 {
     public class Room
     {
-        public const double HEIGHT = 100;
-        public const double WIDTH = 100;
+        public const double HEIGHT = 1000;
+        public const double WIDTH = 1000;
         public const int UPDATE_TIME_MS = 200;
         public const int WAITING_TIME_BEFORE_ROUND_MS = 10000;
         private const int FOOD_AMOUNT_PER_UPDATE = 100;
