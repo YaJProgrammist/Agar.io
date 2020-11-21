@@ -39,8 +39,12 @@ public class GameManager : MonoBehaviour
         RoundIsRunning = false;
         PlayerIsDead = false;
 
-    EventsSender.RegisterEvent(new ConnectionToServer());
         StartGame();
+    }
+
+    public void SetConnection()
+    {
+        EventsSender.RegisterEvent(new ConnectionToServer());
     }
 
     public void StartGame()
@@ -78,12 +82,15 @@ public class GameManager : MonoBehaviour
     {
         Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - Vector3.zero).normalized;
         //send on server current player direction
+
+        EventsSender.RegisterEvent(new ChangeVelocity(PlayerManager.Instance.currentPlayerId, (double)direction.x, (double)direction.y));
     }
 
     public void DivideCurrentPlayer()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            EventsSender.RegisterEvent(new Split(PlayerManager.Instance.currentPlayerId));
             // send on server player want to split
         }
     }
@@ -93,8 +100,14 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             CurrentPlayerLeft();
+            EventsSender.RegisterEvent(new LeaveGame(PlayerManager.Instance.currentPlayerId));
             // send on server player left outgo 
         }
+    }
+
+    void OnApplicationQuit()
+    {
+        EventsSender.RegisterEvent(new LeaveGame(PlayerManager.Instance.currentPlayerId));
     }
 
     // Update is called once per frame
