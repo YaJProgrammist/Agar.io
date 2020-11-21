@@ -150,12 +150,12 @@ namespace Server
             while (true)
             {
                 Thread.Sleep(WAITING_TIME_BEFORE_ROUND_MS);
-                RefreshRoom();
-                IsGameRunning = true;
 
                 Console.WriteLine("Round started");
                 RoundStarted roundStartedGameEvent = new RoundStarted(players);
                 OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
+                RefreshRoom();
+                IsGameRunning = true;
 
                 while (IsGameRunning)
                 {

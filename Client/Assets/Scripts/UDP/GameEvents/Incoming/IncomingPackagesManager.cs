@@ -9,6 +9,8 @@ public static class IncomingPackagesManager
         {
             IncomingGameEvent gameEvent;
 
+            Debug.Log((IncomingGameEventTypes)package[0]);
+
             switch ((IncomingGameEventTypes)package[0])
             {
                 case IncomingGameEventTypes.CirclesFrameUpdate:

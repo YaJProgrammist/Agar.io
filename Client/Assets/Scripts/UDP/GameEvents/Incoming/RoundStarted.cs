@@ -45,8 +45,8 @@ public class RoundStarted : IncomingGameEvent
 
     public override void Handle()
     {
-
-        for (int i=0; i < playersId.Count; i++)
+        Debug.Log("start round");
+        for (int i = 0; i < playersId.Count; i++)
         {
             PlayerManager.Instance.AddCircle(circleId[i], circleX[i], circleY[i], circleRadius[i], (playersId[i] == PlayerManager.Instance.currentPlayerId));
         }

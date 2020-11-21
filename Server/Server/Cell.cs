@@ -15,14 +15,41 @@ namespace Server
             containedFood = new SortedSet<Food>();
         }
 
+        public void AddCircle(Circle circle)
+        {
+            containedCircles.Add(circle);
+            circle.OnCircleEaten += (s, ea) => RemoveCircle(ea.Eaten);
+        }
+
+        public void AddFood(Food food)
+        {
+            containedFood.Add(food);
+            food.OnFoodEaten += (s, ea) => RemoveFood(ea.Eaten);
+        }
+
         public void Update()
         {
 
         }
 
-        public void EatableObjectIsIn(EatableObject eatableObject)
+        /*public bool EatableObjectIsIn(EatableObject eatableObject)
         {
 
+        }
+
+        public bool EatableObjectIsIn(EatableObject eatableObject)
+        {
+
+        }*/
+
+        private void RemoveCircle(Circle circle)
+        {
+            containedCircles.Remove(circle);
+        }
+
+        private void RemoveFood(Food food)
+        {
+            containedFood.Remove(food);
         }
     }
 }
