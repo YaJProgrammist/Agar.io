@@ -41,7 +41,7 @@ public class PlayerManager : MonoBehaviour
         currentPlayerCircles = new List<CircleController>();
         otherPlayersCircles = new List<CircleController>();
 
-        GameManager.Instance.RoundEnded += () => { KillEveryone(); };
+        GameManager.RoundEnded += (s, ea) => { KillEveryone(); };
     }
 
     private void Awake()
@@ -114,19 +114,20 @@ public class PlayerManager : MonoBehaviour
 
     public void RemoveCircle(int circleId)
     {
-        int maxListLength = Mathf.Max(currentPlayerCircles.Count, otherPlayersCircles.Count);
-
-        for (int i = 0; i < maxListLength; i++)
+        for (int i = 0; i < currentPlayerCircles.Count; i++)
         {
-            //to do refactor
-
             if (currentPlayerCircles[i].Id == circleId)
             {
                 currentPlayerCircles[i].KillCircle();
                 currentPlayerCircles.Remove(currentPlayerCircles[i]);
                 i--;
                 return;
-            } else if (otherPlayersCircles[i].Id == circleId)
+            }
+        }
+
+        for (int i = 0; i < otherPlayersCircles.Count; i++)
+        {
+            if (otherPlayersCircles[i].Id == circleId)
             {
                 otherPlayersCircles[i].KillCircle();
                 otherPlayersCircles.Remove(otherPlayersCircles[i]);

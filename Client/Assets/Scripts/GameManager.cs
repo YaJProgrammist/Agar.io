@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     public bool PlayerIsDead;
     public Queue<IncomingGameEvent> GameEvents = new Queue<IncomingGameEvent>(); 
 
-    public Action RoundEnded;
+    public static event EventHandler RoundEnded;
 
     private void CreateSingleton()
     {
@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        CheckIfDivideCurrentPlayer();
+
         while (GameEvents.Count > 0)
         {
             GameEvents.Dequeue().Handle();
@@ -90,7 +92,7 @@ public class GameManager : MonoBehaviour
         RoundIsRunning = false;
         PlayerIsDead = true;
 
-        RoundEnded?.Invoke();
+        RoundEnded?.Invoke(this, new EventArgs());
     }
 
 
@@ -104,7 +106,7 @@ public class GameManager : MonoBehaviour
         EventsSender.RegisterEvent(new ChangeVelocity(PlayerManager.Instance.currentPlayerId, (double)direction.x, (double)direction.y));
     }
 
-    public void DivideCurrentPlayer()
+    public void CheckIfDivideCurrentPlayer()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -128,13 +130,12 @@ public class GameManager : MonoBehaviour
         EventsSender.RegisterEvent(new LeaveGame(PlayerManager.Instance.currentPlayerId));
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if (RoundIsRunning && !PlayerIsDead)
         {
             CheckIfLeaveGame();
-            DivideCurrentPlayer();
+            
             if (sendDirectionTimer >= SEND_DIRECTION_TIME)
             {
                 SendDirection();
