@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using System;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class GameManager : MonoBehaviour
     public bool RoundIsRunning;
     public bool PlayerIsDead;
     public Queue<IncomingGameEvent> GameEvents = new Queue<IncomingGameEvent>();
+
+    public Action RoundEnded;
 
     private void CreateSingleton()
     {
@@ -83,7 +86,8 @@ public class GameManager : MonoBehaviour
     {
         RoundIsRunning = false;
         PlayerIsDead = true;
-        PlayerManager.Instance.KillEveryone();
+
+        RoundEnded?.Invoke();
     }
 
 

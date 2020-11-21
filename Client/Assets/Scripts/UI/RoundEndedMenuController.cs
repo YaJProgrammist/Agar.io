@@ -18,6 +18,9 @@ public class RoundEndedMenuController : MonoBehaviour
     [SerializeField]
     Button restartButton;
 
+    [SerializeField]
+    Canvas canvas;
+
     private List<RatingSectorController> createdSectors;
 
     private void Awake()
@@ -26,7 +29,9 @@ public class RoundEndedMenuController : MonoBehaviour
 
         restartButton.onClick.AddListener(()=> {
             GameManager.Instance.StartGame();
+            EventsSender.RegisterEvent(new LeaveGame(PlayerManager.Instance.currentPlayerId));
         });
+
     }
 
     private void DeleteCurrentRating()
@@ -42,12 +47,21 @@ public class RoundEndedMenuController : MonoBehaviour
 
     public void UpdateRating(List<int> playersId, List<double> playerScore)
     {
+        float scaleFactor = canvas.scaleFactor;
+
+        float scaleHeight = ratingSectorPrefab.GetComponent<RectTransform>().rect.height * scaleFactor;
+        float scaleWidth = ratingSectorPrefab.GetComponent<RectTransform>().rect.width * scaleFactor;
+
         for (int i = 0; i < playersId.Count; i++)
         {
             RatingSectorController newSector = Instantiate(ratingSectorPrefab);
             newSector.transform.SetParent(grid.transform);
 
+            newSector.GetComponent<RectTransform>().sizeDelta = new Vector2(scaleWidth, scaleHeight);
+
             newSector.UpdateValues(playersId[i], playerScore[i]);
+
+            createdSectors.Add(newSector);
         }
     }
 

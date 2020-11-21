@@ -40,6 +40,8 @@ public class PlayerManager : MonoBehaviour
     {
         currentPlayerCircles = new List<CircleController>();
         otherPlayersCircles = new List<CircleController>();
+
+        GameManager.Instance.RoundEnded += () => { KillEveryone(); };
     }
 
     private void Awake()

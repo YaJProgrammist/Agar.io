@@ -74,5 +74,7 @@ public class CameraController : MonoBehaviour
         zeroPoint = new Vector3(500, 500, transform.position.z);
 
         ResetCameraView();
+
+        GameManager.Instance.RoundEnded += () => { ResetCameraView(); };
     }
 }
