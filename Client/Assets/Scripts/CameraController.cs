@@ -75,6 +75,6 @@ public class CameraController : MonoBehaviour
 
         ResetCameraView();
 
-        GameManager.Instance.RoundEnded += () => { ResetCameraView(); };
+        GameManager.Instance.RoundEnded += ResetCameraView;
     }
 }
