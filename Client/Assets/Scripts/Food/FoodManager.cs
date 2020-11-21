@@ -55,6 +55,8 @@ public class FoodManager : MonoBehaviour
         newFoodItem.transform.localScale = new Vector3((float)radius, (float)radius, (float)radius);
 
         newFoodItem.GetComponent<SpriteRenderer>().color = colors[Random.Range(0, colors.Length)];
+
+        existedFood.Add(newFoodItem);
     }
 
     public void RemoveFood(List<int> foodId)
@@ -71,6 +73,7 @@ public class FoodManager : MonoBehaviour
         {
             if (existedFood[i].Id == foodId)
             {
+                Debug.LogWarning("found");
                 existedFood[i].SwallowFoodParticle();
                 existedFood.RemoveAt(i);
                 i--;
