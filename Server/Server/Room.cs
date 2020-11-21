@@ -102,7 +102,7 @@ namespace Server
 
             for (int i = 0; i < players.Count; i++)
             {
-                Point playerPosition = GetRandomPointInRoom();
+                Point playerPosition;
 
                 while (true)
                 {
@@ -135,9 +135,6 @@ namespace Server
 
                 players[i].StartNewGame(playerPosition);
             }
-
-            RoundStarted roundStartedGameEvent = new RoundStarted(players);
-            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
         }
 
         private Point GetRandomPointInRoom()
@@ -156,6 +153,7 @@ namespace Server
                 RefreshRoom();
                 IsGameRunning = true;
 
+                Console.WriteLine("Round started");
                 RoundStarted roundStartedGameEvent = new RoundStarted(players);
                 OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(roundStartedGameEvent));
 

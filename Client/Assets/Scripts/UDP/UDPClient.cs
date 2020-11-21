@@ -57,16 +57,21 @@ public class UDPClient
         IPEndPoint e = new IPEndPoint(IPAddress.Any, CLIENT_PORT);
         UdpClient u = new UdpClient(e);
 
-        UdpState s = new UdpState();
-        s.e = e;
-        s.u = u;
-
-        Console.WriteLine("listening for messages");
-        u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
-
-        while (!messageReceived)
+        while (true)
         {
-            Thread.Sleep(50);
+            messageReceived = false;
+
+            UdpState s = new UdpState();
+            s.e = e;
+            s.u = u;
+
+            Console.WriteLine("listening for messages");
+            u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
+
+            while (!messageReceived)
+            {
+                Thread.Sleep(50);
+            }
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using Server.Events.Incoming;
+﻿using Server.Events;
+using Server.Events.Incoming;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -87,7 +88,7 @@ namespace Server
 
         public void SendMessageToPlayer(byte[] message, int messageLength, int playerId)
         {
-            Console.WriteLine("send {0}", playerId);
+            Console.WriteLine("send {0} {1}", playerId, (OutgoingGameEventTypes)message[0]);
             try
             {
                 Console.WriteLine("server {0}, port {1}", playerAddresses[playerId].Server, playerAddresses[playerId].Port);
@@ -109,16 +110,21 @@ namespace Server
             IPEndPoint e = new IPEndPoint(IPAddress.Any, SERVER_PORT);
             UdpClient u = new UdpClient(e);
 
-            UdpState s = new UdpState();
-            s.e = e;
-            s.u = u;
-
-            Console.WriteLine("listening for messages");
-            u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
-
-            while (!messageReceived)
+            while (true)
             {
-                Thread.Sleep(50);
+                messageReceived = false;
+
+                UdpState s = new UdpState();
+                s.e = e;
+                s.u = u;
+
+                Console.WriteLine("listening for messages");
+                u.BeginReceive(new AsyncCallback(ReceiveCallback), s);
+
+                while (!messageReceived)
+                {
+                    Thread.Sleep(50);
+                }
             }
         }
 
