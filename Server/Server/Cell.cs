@@ -14,5 +14,15 @@ namespace Server
             containedCircles = new SortedSet<Circle>();
             containedFood = new SortedSet<Food>();
         }
+
+        public void Update()
+        {
+
+        }
+
+        public void EatableObjectIsIn(EatableObject eatableObject)
+        {
+
+        }
     }
 }

@@ -264,11 +264,17 @@ namespace Server
                 }
             }
 
-            CirclesRemoved circlesRemovedGameEvent = new CirclesRemoved(eatPairsCircles.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
-            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesRemovedGameEvent));
+            if (eatPairsCircles.Values.Count > 0)
+            {
+                CirclesRemoved circlesRemovedGameEvent = new CirclesRemoved(eatPairsCircles.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
+                OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesRemovedGameEvent));
+            }
 
-            FoodRemoved foodRemovedGameEvent = new FoodRemoved(eatPairsFood.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
-            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(foodRemovedGameEvent));
+            if (eatPairsFood.Values.Count > 0)
+            {
+                FoodRemoved foodRemovedGameEvent = new FoodRemoved(eatPairsFood.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
+                OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(foodRemovedGameEvent));
+            }
 
             foreach (var pair in eatPairsCircles)
             {
