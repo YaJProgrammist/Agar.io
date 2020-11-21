@@ -6,34 +6,36 @@ using UnityEngine.UI;
 
 public class CircleController : MonoBehaviour
 {
-    public int Id;
+    [SerializeField]
+    float timeBetweenMoving = 0.02f;
 
-    //each 0.2 sec
-    //private void FixedUpdate()
-    //{
-    //    if (isMoving)
-    //    {
-    //        //UpdatePosition(newPosition);
-    //    }
-    //}
+    public int Id;
+    public bool isMoving = false;
+
+    private Vector2 lastSavedPosition;
+    private Vector2 lastSavedScale;
+
+    private Vector2 newPosition;
+    private Vector2 newScale;
+
+    private void FixedUpdate()
+    {
+        if (isMoving)
+        {
+            MoveAndChangeSize();
+        }
+    }
 
     public void CircleFrameUpdate(float newX, float newY, float newRadius)
     {
-        StartCoroutine(MoveAndChangeSize(newX, newY, newRadius, 0.02f));
+        newPosition = new Vector2(newX, newY);
+        newScale = new Vector2(newRadius, newRadius);
     }
 
-    private IEnumerator MoveAndChangeSize(float newX, float newY, float newRadius, float time)
+    private void MoveAndChangeSize()
     {
-        float elapsedTime = 0;
-
-        while (elapsedTime < time)
-        {
-            transform.position = Vector2.Lerp(transform.position, new Vector2(newX, newY), (elapsedTime / time));
-            transform.localScale = Vector2.Lerp(transform.localScale, new Vector2(newRadius, newRadius), (elapsedTime / time));
-
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
+       transform.position = Vector2.Lerp(transform.position, newPosition, timeBetweenMoving);
+       transform.localScale = Vector2.Lerp(transform.localScale, newScale, timeBetweenMoving);
     }
 
     public void SetPlayerStartValues(int Id, float x, float y, float radius, Color color)
