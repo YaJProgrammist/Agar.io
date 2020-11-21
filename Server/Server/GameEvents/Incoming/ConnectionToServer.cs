@@ -4,7 +4,6 @@ namespace Server.Events
 {
     public class ConnectionToServer : IncomingGameEvent
     {
-        private const int PLAYERS_PORT = 8002;
         private string playerIP;
 
         public ConnectionToServer(byte[] package)
@@ -22,8 +21,8 @@ namespace Server.Events
         {
             Console.WriteLine("Player {0} is here!", playerIP); // TODO delete
             int playerId = IdGenerator.GetInstance().GetId();
+            UDPServer.GetInstance().AddPlayerClient(playerId, new Address(UDPServer.CLIENT_PORT, playerIP));
             room.AddPlayer(new Player(playerId));
-            UDPServer.GetInstance().AddPlayerClient(playerId, new Address(PLAYERS_PORT, playerIP));
         }
     }
 }
