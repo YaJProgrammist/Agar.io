@@ -37,6 +37,7 @@ namespace Server
             Score = 0;
             PlayerCircles.Clear();
             PlayerCircles.Add(new Circle(firstCirclePoint));
+            Score += Math.Pow(PlayerCircles[0].Radius, 2);
             PlayerCircles[0].OnCircleEaten += OnCircleEaten;
             PlayerCircles[0].OnCircleAte += OnCircleAte;
         }
@@ -65,7 +66,6 @@ namespace Server
 
         public void SetVelocity(double newVelocityX, double newVelocityY)
         {
-            Console.WriteLine("SET PLAYER VELOCITY {0} {1}", velocityX, velocityY);
             velocityX = newVelocityX;
             velocityY = newVelocityY;
         }
@@ -96,29 +96,37 @@ namespace Server
             //UpdateBorderlineCoordinates();
         }
 
-        public void CalculateCirclesEatPairs(Player other, ref Dictionary<Circle, EatableObject> currentEatPairs)
+        public List<EatPair<Circle>> CalculateCirclesEatPairs(Player other)
         {
+            List<EatPair<Circle>> eatPairs = new List<EatPair<Circle>>();
+
             for (int i = 0; i < this.PlayerCircles.Count; i++)
             {
                 for (int j = 0; j < other.PlayerCircles.Count; j++)
                 {
                     if (this.PlayerCircles[i].CanEatOtherObject(other.PlayerCircles[j]))
                     {
-                        currentEatPairs.Add(this.PlayerCircles[i], other.PlayerCircles[j]);
+                        eatPairs.Add(new EatPair<Circle>(this.PlayerCircles[i], other.PlayerCircles[j]));
                     }
                 }
             }
+
+            return eatPairs;
         }
 
-        public void CalculateCirclesEatPairs(Food food, ref Dictionary<Circle, EatableObject> currentEatPairs)
+        public List<EatPair<Food>> CalculateFoodEatPairs(Food food)
         {
+            List<EatPair<Food>> eatPairs = new List<EatPair<Food>>();
+
             for (int i = 0; i < this.PlayerCircles.Count; i++)
             {
                 if (this.PlayerCircles[i].CanEatOtherObject(food))
                 {
-                    currentEatPairs.Add(this.PlayerCircles[i], food);
+                    eatPairs.Add(new EatPair<Food>(this.PlayerCircles[i], food));
                 }
             }
+
+            return eatPairs;
         }
 
         private void StartSplitTimer(object newCirclesObj)

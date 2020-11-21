@@ -19,10 +19,6 @@ namespace Server.Events
             playerId = Deserializer.DeserializeInt(package, 1);
             velocityX = Deserializer.DeserializeNormalizedVectorCoord(package, 5);
             velocityY = Deserializer.DeserializeNormalizedVectorCoord(package, 6);
-
-            Console.WriteLine("Player id", playerId);
-
-            Console.WriteLine();
         }
 
         public override void Handle(Room room)

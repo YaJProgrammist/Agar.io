@@ -5,13 +5,14 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+    private const float SEND_DIRECTION_TIME = 0.2f;
+    private float sendDirectionTimer = 0;
+
     public static GameManager Instance { get; private set; }
 
     public bool RoundIsRunning;
     public bool PlayerIsDead;
     public Queue<IncomingGameEvent> GameEvents = new Queue<IncomingGameEvent>(); 
-    private const float SEND_DIRECTION_TIME = 0.2f;
-    private float sendDirectionTimer = 0;
 
     public Action RoundEnded;
 
@@ -134,8 +135,7 @@ public class GameManager : MonoBehaviour
         {
             CheckIfLeaveGame();
             DivideCurrentPlayer();
-            SendDirection();
-            /*if (sendDirectionTimer >= SEND_DIRECTION_TIME)
+            if (sendDirectionTimer >= SEND_DIRECTION_TIME)
             {
                 SendDirection();
                 sendDirectionTimer = 0;
@@ -143,16 +143,7 @@ public class GameManager : MonoBehaviour
             else
             {
                 sendDirectionTimer += Time.fixedDeltaTime;
-            }*/
-        }
-    }
-
-    private IEnumerator UpdatePlayerVelocity()
-    {
-        while (RoundIsRunning && !PlayerIsDead)
-        {
-            yield return new WaitForSeconds(0.02f);
-            SendDirection();
+            }
         }
     }
 }

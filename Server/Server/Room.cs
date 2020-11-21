@@ -2,7 +2,6 @@
 using Server.Events.Incoming;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace Server
@@ -11,9 +10,9 @@ namespace Server
     {
         public const double HEIGHT = 1000;
         public const double WIDTH = 1000;
-        public const int UPDATE_TIME_MS = 40;
+        public const int UPDATE_TIME_MS = 200;
         public const int WAITING_TIME_BEFORE_ROUND_MS = 10000;
-        private const int FOOD_AMOUNT_PER_UPDATE = 20;
+        private const int FOOD_AMOUNT_PER_UPDATE = 100;
         private const int FOOD_AMOUNT_ON_START = 1000;
         private const double WIN_SCORE = 200;
 
@@ -248,43 +247,45 @@ namespace Server
 
         private void UpdateEatenObjects()
         {
-            Dictionary<Circle, EatableObject> eatPairsCircles = new Dictionary<Circle, EatableObject>();
-            Dictionary<Circle, EatableObject> eatPairsFood = new Dictionary<Circle, EatableObject>();
+            Console.BackgroundColor = ConsoleColor.Black;
+            List<EatPair<Circle>> eatPairsCircles = new List<EatPair<Circle>>();
+            List<EatPair<Food>> eatPairsFood = new List<EatPair<Food>>();
 
             for (int playerInd1 = 0; playerInd1 < players.Count; playerInd1++)
             {
                 for (int playerInd2 = playerInd1 + 1; playerInd2 < players.Count; playerInd2++)
                 {
-                    players[playerInd1].CalculateCirclesEatPairs(players[playerInd2], ref eatPairsCircles);
-                    players[playerInd2].CalculateCirclesEatPairs(players[playerInd1], ref eatPairsCircles);
+                    eatPairsCircles.AddRange(players[playerInd1].CalculateCirclesEatPairs(players[playerInd2]));
+                    eatPairsCircles.AddRange(players[playerInd2].CalculateCirclesEatPairs(players[playerInd1]));
                 }
                 
                 foreach (Food foodItem in food)
                 {
-                    players[playerInd1].CalculateCirclesEatPairs(foodItem, ref eatPairsFood);
+                    eatPairsFood.AddRange(players[playerInd1].CalculateFoodEatPairs(foodItem));
                 }
             }
 
-            if (eatPairsCircles.Values.Count > 0)
+            if (eatPairsCircles.Count > 0)
             {
-                CirclesRemoved circlesRemovedGameEvent = new CirclesRemoved(eatPairsCircles.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
+                CirclesRemoved circlesRemovedGameEvent = new CirclesRemoved(eatPairsCircles.ConvertAll<int>(eatPair => eatPair.Eaten.Id));
                 OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesRemovedGameEvent));
             }
 
-            if (eatPairsFood.Values.Count > 0)
+            if (eatPairsFood.Count > 0)
             {
-                FoodRemoved foodRemovedGameEvent = new FoodRemoved(eatPairsFood.Values.ToList().ConvertAll<int>(eatableObject => eatableObject.Id));
+                FoodRemoved foodRemovedGameEvent = new FoodRemoved(eatPairsFood.ConvertAll<int>(eatPair => eatPair.Eaten.Id));
                 OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(foodRemovedGameEvent));
             }
 
-            foreach (var pair in eatPairsCircles)
+            foreach (EatPair<Circle> pair in eatPairsCircles)
             {
-                pair.Key.EatObject(pair.Value);
+                pair.Eater.EatObject(pair.Eaten);
             }
 
-            foreach (var pair in eatPairsFood)
+            foreach (EatPair<Food> pair in eatPairsFood)
             {
-                pair.Key.EatObject(pair.Value);
+                pair.Eater.EatObject(pair.Eaten);
+                food.Remove(pair.Eaten);
             }
         }
 

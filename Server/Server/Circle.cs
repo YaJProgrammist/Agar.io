@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace Server
 {
     public class Circle : EatableObject
     {
-        public const double MIN_RADIUS = 0.2;
-        public const double NORMAL_SPEED_COEFF = 0.05;
-        public const double ACCELERATED_SPEED_COEFF = 0.1;
+        public const double MIN_RADIUS = 20;// 0.2;
+        public const double NORMAL_SPEED_COEFF = 0.1;
+        public const double ACCELERATED_SPEED_COEFF = 0.2;
         public const int ACCELERATION_TIME_MS = 1000;
-        private List<Circle> childCircles;
         private double speedCoeff;
         public int LeftCellX { get; private set; }
         public int RightCellX { get; private set; }
@@ -25,7 +23,6 @@ namespace Server
 
         public Circle(Point position, double radius = MIN_RADIUS, bool isAccelerated = false) : base (position)
         {
-            childCircles = new List<Circle>();
             Radius = radius;
             IsRemoved = false;
 
@@ -56,7 +53,6 @@ namespace Server
 
         public void Move(double velocityX, double velocityY, double leftBorder, double rightBorder, double topBorder, double bottomBorder)
         {
-            Console.WriteLine("CIRCLE VELOCITY {0} {1}", velocityX, velocityY);
             double speed = speedCoeff / Radius;
 
             double newPositionX = Math.Max(Math.Min(Position.X + velocityX * speed, rightBorder), leftBorder);
@@ -79,10 +75,10 @@ namespace Server
                 return false;
             }
 
-            double otherLeftX = other.Position.X - Radius;
-            double otherRightX = other.Position.X + Radius;
-            double otherBottomY = other.Position.Y - Radius;
-            double otherTopY = other.Position.Y + Radius;
+            double otherLeftX = other.Position.X - other.Radius;
+            double otherRightX = other.Position.X + other.Radius;
+            double otherBottomY = other.Position.Y - other.Radius;
+            double otherTopY = other.Position.Y + other.Radius;
 
             bool horizontallyInside = (this.Position.X - Radius < otherLeftX) && (otherRightX < this.Position.X + Radius);
             bool verticallyInside = (this.Position.Y - Radius < otherBottomY) && (otherTopY < this.Position.Y + Radius);

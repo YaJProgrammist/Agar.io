@@ -8,9 +8,23 @@ namespace Server
         public const double WIDTH = 100;
         private SortedSet<Circle> containedCircles;
         private SortedSet<Food> containedFood;
+        private double leftX;
+        private double rightX;
+        private double bottomY;
+        private double topY;
+        public int CellX { get; private set; }
+        public int CellY { get; private set; }
 
-        public Cell()
+        public Cell(int cellX, int cellY)
         {
+            CellX = cellX;
+            CellY = cellY;
+
+            leftX = cellX * WIDTH;
+            rightX = leftX + WIDTH;
+            bottomY = cellY * HEIGHT;
+            topY = topY + HEIGHT;
+
             containedCircles = new SortedSet<Circle>();
             containedFood = new SortedSet<Food>();
         }
@@ -32,15 +46,18 @@ namespace Server
 
         }
 
-        /*public bool EatableObjectIsIn(EatableObject eatableObject)
-        {
-
-        }
-
         public bool EatableObjectIsIn(EatableObject eatableObject)
         {
+            double eatableObjectLeftX = eatableObject.Position.X - eatableObject.Radius;
+            double eatableObjectRightX = eatableObject.Position.X + eatableObject.Radius;
+            double eatableObjectBottomY = eatableObject.Position.Y - eatableObject.Radius;
+            double eatableObjectTopY = eatableObject.Position.Y + eatableObject.Radius;
 
-        }*/
+            bool horizontallyInside = (leftX < eatableObjectLeftX) && (eatableObjectRightX < rightX);
+            bool verticallyInside = (bottomY < eatableObjectBottomY) && (eatableObjectTopY < topY);
+
+            return horizontallyInside && verticallyInside;
+        }
 
         private void RemoveCircle(Circle circle)
         {

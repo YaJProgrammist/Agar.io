@@ -34,6 +34,7 @@ public class FoodManager : MonoBehaviour
     private void Awake()
     {
         CreateSingleton();
+        existedFood = new List<FoodParticleController>();
     }
 
     public void SpawnFood(List<int> foodId, List<double> foodX, List<double> foodY, List<double> foodRadius)

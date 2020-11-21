@@ -25,6 +25,7 @@ public class FoodRemoved : IncomingGameEvent
 
     public override void Handle()
     {
+        Debug.Log(string.Format("FoodRemovedId: {0}", foodId[0]));
         FoodManager.Instance.RemoveFood(foodId);
     }
 }
