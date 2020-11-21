@@ -10,6 +10,7 @@ namespace Server.Events.Incoming
         {
             try
             {
+                Console.WriteLine((IncomingGameEventTypes)package[0]);
                 IncomingGameEvent gameEvent;
 
                 switch ((IncomingGameEventTypes)package[0])

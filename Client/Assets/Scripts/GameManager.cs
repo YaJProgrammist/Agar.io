@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
     //put next methods into server connection class
     public void SendDirection()
     {
-        Vector2 direction = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - Vector3.zero).normalized;
+        Vector2 direction = new Vector2(Input.mousePosition.x - Screen.width / 2, Input.mousePosition.y - Screen.height / 2).normalized;
         //send on server current player direction
 
         EventsSender.RegisterEvent(new ChangeVelocity(PlayerManager.Instance.currentPlayerId, (double)direction.x, (double)direction.y));
@@ -103,7 +103,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void LeaveGame()
+    public void CheckIfLeaveGame()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         {
             DivideCurrentPlayer();
             SendDirection();
-            LeaveGame();
+            CheckIfLeaveGame();
         }
     }
 

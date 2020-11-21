@@ -38,6 +38,7 @@ public class UDPClient
     {
         try
         {
+            Debug.LogWarning("send direction");
             client.Send(message, messageLength);
         }
         catch (SocketException e)

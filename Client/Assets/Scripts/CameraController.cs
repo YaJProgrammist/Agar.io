@@ -1,12 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
     private void FollowCenter()
     {
-        Vector3 pos = Vector3.zero;
+        Vector3 pos = new Vector3(0, 0, transform.position.z);
         foreach (CircleController circle in PlayerManager.Instance.currentPlayerCircles)
         {
             pos += circle.gameObject.transform.position;
