@@ -851,6 +851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81748088224ea46a291fc50dc10ad901, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resolutionCoefficient: 35.7
+  timeBetweenMoving: 0.02
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
@@ -1320,6 +1322,7 @@ MonoBehaviour:
     type: 3}
   grid: {fileID: 464498017}
   restartButton: {fileID: 1817162944}
+  canvas: {fileID: 0}
 --- !u!114 &1112619304
 MonoBehaviour:
   m_ObjectHideFlags: 0

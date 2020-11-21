@@ -9,7 +9,9 @@ public class GameManager : MonoBehaviour
 
     public bool RoundIsRunning;
     public bool PlayerIsDead;
-    public Queue<IncomingGameEvent> GameEvents = new Queue<IncomingGameEvent>();
+    public Queue<IncomingGameEvent> GameEvents = new Queue<IncomingGameEvent>(); 
+    private const float SEND_DIRECTION_TIME = 0.2f;
+    private float sendDirectionTimer = 0;
 
     public Action RoundEnded;
 
@@ -130,9 +132,18 @@ public class GameManager : MonoBehaviour
     {
         if (RoundIsRunning && !PlayerIsDead)
         {
+            CheckIfLeaveGame();
             DivideCurrentPlayer();
             SendDirection();
-            CheckIfLeaveGame();
+            /*if (sendDirectionTimer >= SEND_DIRECTION_TIME)
+            {
+                SendDirection();
+                sendDirectionTimer = 0;
+            }
+            else
+            {
+                sendDirectionTimer += Time.fixedDeltaTime;
+            }*/
         }
     }
 
