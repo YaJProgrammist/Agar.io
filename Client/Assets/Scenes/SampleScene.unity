@@ -536,7 +536,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f32f39fb5604bd19f31cbae47af27f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: 
   RoundIsRunning: 0
   PlayerIsDead: 0
 --- !u!1 &397060750
@@ -890,7 +889,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -175}
+  m_LocalPosition: {x: 500, y: 500, z: -175}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -910,7 +909,7 @@ GameObject:
   - component: {fileID: 557102038}
   - component: {fileID: 557102037}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: borders
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -941,8 +940,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.5920868, y: 101.77449, z: 1}
-  m_Center: {x: -51.3, y: -1.1485882, z: 0}
+  m_Size: {x: 10, y: 1000, z: 1}
+  m_Center: {x: -500, y: 0, z: 0}
 --- !u!65 &557102038
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -954,8 +953,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3.5920868, y: 101.77449, z: 1}
-  m_Center: {x: 51, y: -1.1485882, z: 0}
+  m_Size: {x: 10, y: 1000, z: 1}
+  m_Center: {x: 500, y: 0, z: 0}
 --- !u!65 &557102039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -967,8 +966,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 101.22938, y: 3.6661453, z: 1}
-  m_Center: {x: 0.076862335, y: -50.9791, z: 0}
+  m_Size: {x: 1000, y: 10, z: 1}
+  m_Center: {x: 0, y: -500, z: 0}
 --- !u!65 &557102040
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -980,8 +979,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 104.717804, y: 3.137741, z: 1}
-  m_Center: {x: -0.44747734, y: 50.644653, z: 0}
+  m_Size: {x: 1000, y: 10, z: 1}
+  m_Center: {x: 0, y: 500, z: 0}
 --- !u!1 &781699443
 GameObject:
   m_ObjectHideFlags: 0
@@ -1440,7 +1439,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1223517464}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 500, y: 500, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1614579887}
@@ -1884,7 +1883,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 2
-  m_Size: {x: 100, y: 100}
+  m_Size: {x: 1000, y: 1000}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -2164,11 +2163,11 @@ MonoBehaviour:
     type: 3}
   foodParent: {fileID: 1619113910}
   colors:
-  - {r: 1, g: 0.36320752, b: 0.36320752, a: 0}
-  - {r: 0.94836533, g: 0.2971698, b: 1, a: 0}
-  - {r: 0, g: 1, b: 0, a: 0}
-  - {r: 0, g: 0.71347237, b: 1, a: 0}
-  - {r: 0.764151, g: 0, b: 0.38659376, a: 0}
+  - {r: 1, g: 0.36320752, b: 0.36320752, a: 1}
+  - {r: 0.94836533, g: 0.2971698, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0, a: 1}
+  - {r: 0, g: 0.71347237, b: 1, a: 1}
+  - {r: 0.764151, g: 0, b: 0.38659376, a: 1}
 --- !u!1 &2000691195
 GameObject:
   m_ObjectHideFlags: 0
