@@ -29,9 +29,9 @@ public class CircleController : MonoBehaviour
         }
     }
 
-    public void SetName(string name)
+    public void SetName(string name, bool isCurrentPlayer = false)
     {
-        Name.text = name;
+        Name.text = (isCurrentPlayer)? PlayerManager.Instance.currentPlayerName : name;
     }
 
     public void CircleFrameUpdate(float newX, float newY, float newRadius)

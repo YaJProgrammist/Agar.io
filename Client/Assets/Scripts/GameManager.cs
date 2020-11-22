@@ -5,9 +5,6 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    private const float SEND_DIRECTION_TIME = 0.2f;
-    private float sendDirectionTimer = 0;
-
     public static GameManager Instance { get; private set; }
 
     public bool RoundIsRunning;
@@ -32,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        CheckIfDivideCurrentPlayer();
+        //CheckIfDivideCurrentPlayer();
 
         while (GameEvents.Count > 0)
         {
@@ -96,55 +93,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    //put next methods into server connection class
-    public void SendDirection()
-    {
-        var mousePos = Input.mousePosition;
-        Vector2 direction = new Vector2(mousePos.x - Screen.width / 2, mousePos.y - Screen.height / 2).normalized;
-        //send on server current player direction
-
-        EventsSender.RegisterEvent(new ChangeVelocity(PlayerManager.Instance.currentPlayerId, (double)direction.x, (double)direction.y));
-    }
-
-    public void CheckIfDivideCurrentPlayer()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            EventsSender.RegisterEvent(new Split(PlayerManager.Instance.currentPlayerId));
-            // send on server player want to split
-        }
-    }
-
-    public void CheckIfLeaveGame()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            CurrentPlayerLeft();
-            EventsSender.RegisterEvent(new LeaveGame(PlayerManager.Instance.currentPlayerId));
-            // send on server player left outgo 
-        }
-    }
-
     void OnApplicationQuit()
     {
         EventsSender.RegisterEvent(new LeaveGame(PlayerManager.Instance.currentPlayerId));
     }
 
-    void FixedUpdate()
-    {
-        if (RoundIsRunning && !PlayerIsDead)
-        {
-            CheckIfLeaveGame();
-            
-            if (sendDirectionTimer >= SEND_DIRECTION_TIME)
-            {
-                SendDirection();
-                sendDirectionTimer = 0;
-            }
-            else
-            {
-                sendDirectionTimer += Time.fixedDeltaTime;
-            }
-        }
-    }
 }
