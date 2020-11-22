@@ -7,6 +7,9 @@ using UnityEngine.UI;
 public class CircleController : MonoBehaviour
 {
     [SerializeField]
+    Text Name;
+
+    [SerializeField]
     float timeBetweenMoving = 0.02f;
 
     public int Id;
@@ -24,6 +27,11 @@ public class CircleController : MonoBehaviour
         {
             MoveAndChangeSize();
         }
+    }
+
+    public void SetName(string name)
+    {
+        Name.text = name;
     }
 
     public void CircleFrameUpdate(float newX, float newY, float newRadius)

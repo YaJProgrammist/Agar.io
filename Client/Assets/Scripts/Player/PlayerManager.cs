@@ -88,6 +88,7 @@ public class PlayerManager : MonoBehaviour
     {
         CircleController newCircle = Instantiate(circlePrefab);
         newCircle.Id = circleId;
+        newCircle.SetName(circleId.ToString());
         newCircle.transform.position = new Vector2((float)circleX, (float)circleY);
         newCircle.transform.localScale = new Vector3((float)circleRadius, (float)circleRadius, (float)circleRadius);
         newCircle.isMoving = true;

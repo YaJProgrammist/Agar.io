@@ -35,6 +35,8 @@ public class FoodManager : MonoBehaviour
     {
         CreateSingleton();
         existedFood = new List<FoodParticleController>();
+
+        GameManager.RoundEnded += (s, ea) => { RemoveAllFood(); };
     }
 
     public void SpawnFood(List<int> foodId, List<double> foodX, List<double> foodY, List<double> foodRadius)
@@ -79,6 +81,18 @@ public class FoodManager : MonoBehaviour
                 i--;
             }
         }
+    }
+
+    public void RemoveAllFood()
+    {
+        for (int i = 0; i < existedFood.Count; i++)
+        {
+            existedFood[i].SwallowFoodParticle();
+            existedFood.RemoveAt(i);
+            i--;
+
+        }
+
     }
 
 }
