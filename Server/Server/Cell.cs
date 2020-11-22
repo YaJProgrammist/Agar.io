@@ -16,8 +16,8 @@ namespace Server
 
         public int CellX { get; private set; }
         public int CellY { get; private set; }
-        public SortedSet<Player> ContainedPlayers { get; private set; }
-        public SortedSet<Food> ContainedFood { get; private set; }
+        public List<Player> ContainedPlayers { get; private set; }
+        public List<Food> ContainedFood { get; private set; }
         public List<Cell> SurroundingCells { get; set; }
 
         public event EventHandler<PlayerAddedEventArgs> OnPlayerAdded;
@@ -35,8 +35,8 @@ namespace Server
             bottomY = cellY * HEIGHT;
             topY = topY + HEIGHT;
 
-            ContainedPlayers = new SortedSet<Player>();
-            ContainedFood = new SortedSet<Food>();
+            ContainedPlayers = new List<Player>();
+            ContainedFood = new List<Food>();
         }
 
         public void AddPlayer(Player player)
@@ -57,8 +57,9 @@ namespace Server
             List<Food> newFood;
             CheckSurroundingCells(out newPlayers, out newFood);
 
-            foreach (Player player in ContainedPlayers)
+            for (int i = 0; i < ContainedPlayers.Count; i++)
             {
+                Player player = ContainedPlayers[i];
                 if (!PlayerIsIn(player))
                 {
                     ContainedPlayers.Remove(player);
@@ -106,8 +107,9 @@ namespace Server
 
             for (int i = 0; i < SurroundingCells.Count; i++)
             {
-                foreach (Player player in SurroundingCells[i].ContainedPlayers)
+                for (int j = 0; j < SurroundingCells[i].ContainedPlayers.Count; j++)
                 {
+                    Player player = SurroundingCells[i].ContainedPlayers[j];
                     if (PlayerIsIn(player))
                     {
                         newPlayers.Add(player);

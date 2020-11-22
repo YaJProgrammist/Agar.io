@@ -5,7 +5,7 @@ namespace Server
 {
     public class Circle : EatableObject
     {
-        public const double MIN_RADIUS = 20;//0.2;
+        public const double MIN_RADIUS = 0.2;
         public const double NORMAL_SPEED_COEFF = 0.1;
         public const double ACCELERATED_SPEED_COEFF = 0.15;
         public const int ACCELERATION_TIME_MS = 200;
