@@ -43,7 +43,13 @@ namespace Server
 
         public void Update()
         {
-
+            foreach (Circle circle in containedCircles)
+            {
+                if (!EatableObjectIsIn(circle))
+                {
+                    containedCircles.Remove(circle);
+                }
+            }
         }
 
         public bool EatableObjectIsIn(EatableObject eatableObject)
@@ -57,6 +63,11 @@ namespace Server
             bool verticallyInside = (bottomY < eatableObjectBottomY) && (eatableObjectTopY < topY);
 
             return horizontallyInside && verticallyInside;
+        }
+
+        private void CheckSurroundingCells()
+        {
+
         }
 
         private void RemoveCircle(Circle circle)

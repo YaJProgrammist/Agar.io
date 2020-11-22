@@ -74,7 +74,6 @@ public class FoodManager : MonoBehaviour
         {
             if (existedFood[i].Id == foodId)
             {
-                Debug.LogWarning("found");
                 existedFood[i].SwallowFoodParticle();
                 existedFood.RemoveAt(i);
                 i--;

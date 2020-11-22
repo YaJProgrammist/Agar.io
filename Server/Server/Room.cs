@@ -95,6 +95,12 @@ namespace Server
             OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesAddedGameEvent));
         }
 
+        private void OnPlayerCirclesRemoved(object sender, PlayerCirclesRemovedEventArgs eventArgs)
+        {
+            CirclesRemoved circlesRemovedGameEvent = new CirclesRemoved(eventArgs.NewCircles.ConvertAll(circle => circle.Id));
+            OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesRemovedGameEvent));
+        }
+
         private void GenerateplayersFirstCircles()
         {
             Random rand = new Random();
@@ -184,6 +190,7 @@ namespace Server
         {
             player.OnPlayerDied += OnPlayerDied;
             player.OnPlayerCirclesAdded += OnPlayerCirclesAdded;
+            player.OnPlayerCirclesRemoved += OnPlayerCirclesRemoved;
         }
 
         private void Update()

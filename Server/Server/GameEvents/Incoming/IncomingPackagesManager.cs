@@ -18,6 +18,7 @@ namespace Server.Events.Incoming
                         gameEvent = new ChangeVelocity(package);
                         break;
                     case IncomingGameEventTypes.Split:
+                        Console.WriteLine("SPLIT");
                         gameEvent = new Split(package);
                         break;
                     case IncomingGameEventTypes.ConnectionToServer:

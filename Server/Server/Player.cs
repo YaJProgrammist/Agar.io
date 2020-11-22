@@ -22,6 +22,7 @@ namespace Server
 
         public event EventHandler<PlayerDiedEventArgs> OnPlayerDied;
         public event EventHandler<PlayerCirclesAddedEventArgs> OnPlayerCirclesAdded;
+        public event EventHandler<PlayerCirclesRemovedEventArgs> OnPlayerCirclesRemoved;
 
         public Player(int playerId)
         {
@@ -36,23 +37,22 @@ namespace Server
         {
             Score = 0;
             PlayerCircles.Clear();
-            PlayerCircles.Add(new Circle(firstCirclePoint));
+            AddCircle(new Circle(firstCirclePoint));
             Score += Math.Pow(PlayerCircles[0].Radius, 2);
-            PlayerCircles[0].OnCircleEaten += OnCircleEaten;
-            PlayerCircles[0].OnCircleAte += OnCircleAte;
         }
 
         public void Split()
         {
-            double minSplitRadius = Circle.MIN_RADIUS * 1.414;
+            double minSplitRadius = 0.02;//Circle.MIN_RADIUS * 1.414;
             List<Circle> newCircles = new List<Circle>();
 
             foreach (Circle circle in PlayerCircles)
             {
-                if (circle.Radius >= minSplitRadius)
+                if (circle.Radius >= minSplitRadius) 
                 {
                     circle.Radius /= 2;
-                    newCircles.Add(new Circle(circle.Position, circle.Radius, true));
+                    Circle newCircle = new Circle(circle.Position, circle.Radius, true);
+                    newCircles.Add(newCircle);
                 }
             }
 
@@ -60,8 +60,11 @@ namespace Server
             splitTimer.Start(newCircles);
 
             OnPlayerCirclesAdded?.Invoke(this, new PlayerCirclesAddedEventArgs(newCircles, this.Id));
-            
-            PlayerCircles.AddRange(newCircles);
+
+            foreach(Circle circle in newCircles)
+            {
+                AddCircle(circle);
+            }
         }
 
         public void SetVelocity(double newVelocityX, double newVelocityY)
@@ -74,12 +77,6 @@ namespace Server
         {
             foreach (Circle circle in PlayerCircles)
             {
-                if (circle.IsRemoved)
-                {
-                    Score -= circle.Radius;
-                    continue;
-                }
-
                 circle.Move(velocityX, velocityY);
             }
 
@@ -129,6 +126,13 @@ namespace Server
             return eatPairs;
         }
 
+        private void AddCircle(Circle circle)
+        {
+            circle.OnCircleEaten += OnCircleEaten;
+            circle.OnCircleAte += OnCircleAte;
+            PlayerCircles.Add(circle);
+        }
+
         private void StartSplitTimer(object newCirclesObj)
         {
             if (newCirclesObj is List<Circle> newCircles)
@@ -144,6 +148,8 @@ namespace Server
                 {
                     PlayerCircles[0].EatObject(circle);
                 }
+
+                OnPlayerCirclesRemoved?.Invoke(this, new PlayerCirclesRemovedEventArgs(newCircles, Id));
             }
         }
 
@@ -166,11 +172,6 @@ namespace Server
             RightX = rightX;
             BottomY = bottomY;
             TopY = topY;
-        }
-
-        private double GetCameraHeight()
-        {
-            return Math.Max(RightX - LeftX, TopY - BottomY);
         }
 
         private void OnCircleEaten(object sender, CircleEatenEventArgs eventArgs)
