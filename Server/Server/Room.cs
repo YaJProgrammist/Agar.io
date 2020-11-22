@@ -16,7 +16,7 @@ namespace Server
         private const int FOOD_AMOUNT_ON_START = 1000;
         private const double WIN_SCORE = 200;
 
-        private List<Cell> cells;
+        private List<List<Cell>> cells;
         private List<Player> players;
         private List<Player> playersWaitingForNextRound;
         private List<Food> food;
@@ -29,12 +29,13 @@ namespace Server
 
         public Room()
         {
-            cells = new List<Cell>();
+            cells = new List<List<Cell>>();
             players = new List<Player>();
             IsGameRunning = false;
             rand = new Random();
             food = new List<Food>();
             playersWaitingForNextRound = new List<Player>();
+            InitializeCells();
 
             IncomingPackagesManager.OnPackageIncame += (s, ea) => ea.GameEvent.Handle(this);
         }
@@ -101,6 +102,68 @@ namespace Server
             OnGameEventOccured?.Invoke(this, new GameEventOccuredEventArgs(circlesRemovedGameEvent));
         }
 
+        private void InitializeCells()
+        {
+            int cellNumXMax = (int)(WIDTH / Cell.WIDTH);
+            int cellNumYMax = (int)(HEIGHT / Cell.HEIGHT);
+
+            for (int cellNumX = 0; cellNumX <= cellNumXMax; cellNumX++)
+            {
+                cells.Add(new List<Cell>());
+                for (int cellNumY = 0; cellNumY <= cellNumYMax; cellNumY++)
+                {
+                    Cell newCell = new Cell(cellNumX, cellNumY);
+                    cells[cellNumX].Add(newCell);
+
+                    if (cellNumX > 0)
+                    {
+                        cells[cellNumX - 1][cellNumY].SurroundingCells.Add(newCell);
+                        newCell.SurroundingCells.Add(cells[cellNumX - 1][cellNumY]);
+                    }
+
+                    if (cellNumY > 0)
+                    {
+                        cells[cellNumX][cellNumY - 1].SurroundingCells.Add(newCell);
+                        newCell.SurroundingCells.Add(cells[cellNumX][cellNumY - 1]);
+                    }
+
+                    if (cellNumX > 0 && cellNumY > 0)
+                    {
+                        cells[cellNumX - 1][cellNumY - 1].SurroundingCells.Add(newCell);
+                        newCell.SurroundingCells.Add(cells[cellNumX - 1][cellNumY - 1]);
+                    }
+
+                    if (cellNumX > 0 && cellNumY < cellNumYMax - 1)
+                    {
+                        cells[cellNumX - 1][cellNumY + 1].SurroundingCells.Add(newCell);
+                        newCell.SurroundingCells.Add(cells[cellNumX - 1][cellNumY + 1]);
+                    }
+                }
+            }
+        }
+
+        private void UpdateAllCells()
+        {
+            foreach(List<Cell> cellRow in cells)
+            {
+                foreach (Cell cell in cellRow)
+                {
+                    cell.Update();
+                }
+            }
+        }
+
+        private void ClearAllCells()
+        {
+            foreach (List<Cell> cellRow in cells)
+            {
+                foreach (Cell cell in cellRow)
+                {
+                    cell.Clear();
+                }
+            }
+        }
+
         private void GenerateplayersFirstCircles()
         {
             Random rand = new Random();
@@ -139,6 +202,9 @@ namespace Server
                 }
 
                 players[i].StartNewGame(playerPosition);
+                int cellX = Math.Min((int)(playerPosition.X / Cell.WIDTH), cells.Count);
+                int cellY = Math.Min((int)(playerPosition.Y / Cell.HEIGHT), cells.Count);
+                cells[cellX][cellY].AddPlayer(players[i]);
             }
         }
 
@@ -171,10 +237,11 @@ namespace Server
             players.AddRange(playersWaitingForNextRound);
             playersWaitingForNextRound.Clear();
             food.Clear();
+            ClearAllCells();
 
             foreach(Player player in players)
             {
-                SubscripeOnPlayerEvents(player);
+                SubscribeOnPlayerEvents(player);
             }
 
             GenerateplayersFirstCircles();
@@ -186,7 +253,7 @@ namespace Server
             GenerateFood(FOOD_AMOUNT_ON_START);
         }
 
-        private void SubscripeOnPlayerEvents(Player player)
+        private void SubscribeOnPlayerEvents(Player player)
         {
             player.OnPlayerDied += OnPlayerDied;
             player.OnPlayerCirclesAdded += OnPlayerCirclesAdded;
@@ -219,6 +286,8 @@ namespace Server
                 StopGame();
             }
 
+            UpdateAllCells();
+
             // TODO delete
             foreach (Player player in players)
             {
@@ -235,7 +304,12 @@ namespace Server
             for (int i = 0; i < amount; i++)
             {
                 Point newFoodPoint = GetRandomPointInRoom();
-                newFood.Add(new Food(newFoodPoint));
+                Food newFoodItem = new Food(newFoodPoint);
+                newFood.Add(newFoodItem);
+
+                int cellX = Math.Min((int)(newFoodItem.Position.X / Cell.WIDTH), cells.Count);
+                int cellY = Math.Min((int)(newFoodItem.Position.Y / Cell.HEIGHT), cells.Count);
+                cells[cellX][cellY].AddFood(newFoodItem);
             }
 
             food.AddRange(newFood);

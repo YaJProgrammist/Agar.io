@@ -47,14 +47,9 @@ public class RoundEndedMenuController : MonoBehaviour
 
     public void UpdateRating(List<int> playersId, List<double> playerScore)
     {
-        float scaleHeight = ratingSectorPrefab.GetComponent<RectTransform>().rect.height * canvas.scaleFactor;
-        float scaleWidth = ratingSectorPrefab.GetComponent<RectTransform>().rect.width * canvas.scaleFactor;
-
         for (int i = 0; i < playersId.Count; i++)
         {
-            RatingSectorController newSector = Instantiate(ratingSectorPrefab);
-            newSector.GetComponent<RectTransform>().sizeDelta = new Vector2(scaleWidth, scaleHeight);
-            newSector.transform.SetParent(grid.transform);
+            RatingSectorController newSector = Instantiate(ratingSectorPrefab, grid.transform);
 
             newSector.UpdateValues(playersId[i], playerScore[i]);
 

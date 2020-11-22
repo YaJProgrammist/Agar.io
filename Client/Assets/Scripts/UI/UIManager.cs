@@ -78,6 +78,7 @@ public class UIManager : MonoBehaviour
 
     public void ShowAndUpdateRating(List<int> playersId, List<double> playerScore)
     {
+        Debug.Log("RATING");
         playerLeftWindow.SetActive(false);
 
         roundEndedMenuController.Open();
